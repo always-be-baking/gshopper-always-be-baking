@@ -1,0 +1,25 @@
+TEAM CONTRACT FOR 'ALWAYS BE BAKING'
+
+
+Roles
+1. Taskmaster
+2. Gitmaster
+3. Testmaster
+
+EXPECTATION
+- At the end of the day & before breaking for lunch, push! Then pull first thing in the morning
+- Rotating Roles: every 1-2 days, depending on the ticket.
+- Reasonable work hours. Sleep is important!
+- Asking for external help after researching internally (individually-> pairs-> group ->fellows)
+- When there are disagreements, take it to a vote, escalate to fellow 
+- Reach the first 2 tiers
+- Standups: we will have every morning for ~15 mins.
+
+NORMS
+- Be open (to asking/ helping)
+- Be honest & understanding about each other's abilities. We're all learning!
+- Pair program whenever possible.
+- Be on time.
+- Be responsive.
+- Weekend/after hours: be open to working from home or meeting up
+- Feel free to take breaks
