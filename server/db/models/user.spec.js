@@ -19,8 +19,8 @@ describe('User model', () => {
           lastName : 'smith',
           email: 'cody@puppybook.com',
           password: 'bones123',
-          shippingAdress : '23 Wall Street New York, NY 10000',
-          billingAdress : '23 Wall Street New York, NY 10000'
+          shippingAddress : '23 Wall Street New York, NY 10000',
+          billingAddress : '23 Wall Street New York, NY 10000'
 
         })
       })
