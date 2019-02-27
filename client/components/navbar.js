@@ -6,7 +6,7 @@ import {logout} from '../store'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
-    <h1>BOILERMAKER</h1>
+    <h1>Welcome to our bakery!</h1>
     <nav>
       {isLoggedIn ? (
         <div>
@@ -31,8 +31,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
  * CONTAINER
  */
 const mapState = state => {
+  console.log('state', state)
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.userReducer.id
   }
 }
 
