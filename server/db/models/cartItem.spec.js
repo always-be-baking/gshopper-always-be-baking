@@ -2,10 +2,10 @@
 
 const {expect} = require('chai')
 const db = require('../index')
-const Cart = require('./cart')
+const CartItem = require('./cartItem')
 // const Cart = db.model('cart')
 
-describe('cart model', () => {
+describe('CartItem model', () => {
   beforeEach(() => {
     return db.sync({force: true})
   })
@@ -15,7 +15,7 @@ describe('cart model', () => {
       let cart
 
       beforeEach(async () => {
-        cart = await Cart.create({
+        cart = await CartItem.create({
           quantity: 2,
           bought: false
         })
