@@ -14,7 +14,7 @@ const Product = db.define('product', {
     allowNull: false
   },
   price: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.DECIMAL,
     allowNull: false
   },
   image: {
