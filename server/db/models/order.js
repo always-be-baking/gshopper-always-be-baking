@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-const CartItem = db.define('cartItems', {
+const Order = db.define('order', {
   quantity: {
     type: Sequelize.INTEGER,
     allowNull: false
@@ -9,11 +9,14 @@ const CartItem = db.define('cartItems', {
   bought: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
+  },
+  orderNumber: {
+    type: Sequelize.INTEGER
   }
 })
 
-CartItem.prototype.boughtTrue = function() {
+Order.prototype.boughtTrue = function() {
   this.bought = true
 }
 
-module.exports = CartItem
+module.exports = Order
