@@ -16,7 +16,11 @@ describe('User routes', () => {
 
     beforeEach(() => {
       return User.create({
-        email: codysEmail
+        firstName: 'cody',
+        lastName: 'smith',
+        email: 'cody@puppybook.com',
+        shippingAddress: '5 Hannover sq New York City, NY 10000',
+        billingAddress: '5 Hannover sq New York City, NY 10000'
       })
     })
 
