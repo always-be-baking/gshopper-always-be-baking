@@ -21,13 +21,22 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+        <Route path="/cakes" render={() => <ListView category="cakes" />} />
+        <Route
+          path="/cookies"
+          render={() => <ListView category="cookies" />}
+        />
+        <Route
+          path="/pastries"
+          render={() => <ListView category="pastries" />}
+        />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
           </Switch>
         )}
-        {/* Displays our Login component as a fallback */}
+        {/* Displays our Homepage component as a fallback */}
         <Route component={Login} />
       </Switch>
     )
