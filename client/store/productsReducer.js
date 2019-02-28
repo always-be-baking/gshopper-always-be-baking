@@ -12,13 +12,7 @@ const GET_ONE_PRODUCT = 'GET_ONE_PRODUCT'
  */
 const initialState = {
   products: [],
-  selectedProduct: {
-    name: '',
-    category: '',
-    price: 0,
-    image: '',
-    description: ''
-  }
+  selectedProduct: {}
 }
 
 /**
@@ -32,9 +26,10 @@ const getSelectedProduct = product => ({type: GET_ONE_PRODUCT, product})
  */
 
 //get all products thunk
-export const fetchProducts = () => async dispatch => {
+export const fetchProducts = category => async dispatch => {
   try {
-    const res = await axios.get('/api/products')
+    const category = category
+    const res = await axios.get(`/api/products/${category}`)
     const data = res.data
     const action = getProducts(data)
     dispatch(action)
