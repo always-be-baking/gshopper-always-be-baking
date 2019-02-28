@@ -6,6 +6,10 @@ const Product_Order = db.define('product_order', {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true
+  },
+  quantity: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   }
 })
 
