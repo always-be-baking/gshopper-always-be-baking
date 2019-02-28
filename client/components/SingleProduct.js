@@ -20,6 +20,8 @@ export class SingleProduct extends Component {
     // console.log('rendering')
     if (!this.props.selectedProduct) {
       return <div>loading...</div>
+
+   
     }
     // if (!this.props.category) {
     //   return (
@@ -35,6 +37,7 @@ export class SingleProduct extends Component {
         hello
         <h2>{this.props.products}</h2>
         <ul>
+
           <div key={this.props.selectedProduct.id}>
             <p>{this.props.selectedProduct.name}</p>
             <Link to={`/${this.props.selectedProduct.category}`}>
@@ -43,6 +46,7 @@ export class SingleProduct extends Component {
             <img src={this.props.selectedProduct.image} />
             <p>{this.props.selectedProduct.price}</p>
             <p>{this.props.selectedProduct.description}</p>
+
           </div>
         </ul>
       </div>
@@ -53,11 +57,13 @@ export class SingleProduct extends Component {
 const mapStateToProps = state => ({
   // products: state.products,
   selectedProduct: state.productsReducer.selectedProduct
+
 })
 
 const mapDispathToProps = dispatch => {
   return {
     fetchOneProduct: id => dispatch(fetchOneProduct(id))
+
   }
 }
 

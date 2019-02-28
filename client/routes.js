@@ -10,6 +10,7 @@ import {
   HomePage,
   SingleProduct
 } from './components'
+
 import {me} from './store'
 
 /**
@@ -29,6 +30,7 @@ class Routes extends Component {
         <Route exact path="/" component={HomePage} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+
         <Route
           exact
           path="/cakes"
