@@ -6,11 +6,11 @@ const Product = db.define('product', {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      isEmpty: true
+      notEmpty: true
     }
   },
   category: {
-    type: Sequelize.ENUM('cookie', 'cake', 'pastry'),
+    type: Sequelize.ENUM('cookies', 'cakes', 'pastries'),
     allowNull: false
   },
   price: {

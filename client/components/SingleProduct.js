@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'http2'
-import {fetchOneProduct} from '../store/productsReducer'
+import {fetchOneProducts} from '../store/productsReducer'
 
 export class SingleProduct extends Component {
   render() {
-    if (!this.props.selectedProduct) {
+    if (!this.props.category) {
       return (
         <div>
           Loading
@@ -17,12 +17,12 @@ export class SingleProduct extends Component {
       <div>
         <h2>{this.props.selectedProduct.name}</h2>
         <ul>
-          <div key={this.props.selectedProduct.id}>
-            <p>{this.props.selectedProduct.name}</p>
-            <p>{this.props.selectedProduct.category}</p>
-            <img src={this.props.selectedProduct.image} />
-            <p>{this.props.selectedProduct.price}</p>
-            <p>{this.props.selectedProduct.description}</p>
+          <div key={this.props.product.id}>
+            <p>{this.props.product.name}</p>
+            <p>{this.props.product.category}</p>
+            <img src={this.props.product.image} />
+            <p>{this.props.product.price}</p>
+            <p>{this.props.product.description}</p>
           </div>
         </ul>
       </div>
@@ -31,12 +31,12 @@ export class SingleProduct extends Component {
 }
 
 const mapStateToProps = state => ({
-  selectedProduct: state.selectedProduct
+  products: state.products
 })
 
 const mapDispathToProps = dispatch => {
   return {
-    fetcOneProduct: product => dispatch(fetchOneProduct(product))
+    fetcOneProduct: category => dispatch(fetchOneProducts(category))
   }
 }
 
