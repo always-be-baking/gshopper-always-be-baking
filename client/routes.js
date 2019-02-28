@@ -22,10 +22,7 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/cakes" render={() => <ListView category="cakes" />} />
-        <Route
-          path="/cookies"
-          render={() => <ListView category="cookies" />}
-        />
+        <Route path="/cookies" render={() => <ListView category="cookies" />} />
         <Route
           path="/pastries"
           render={() => <ListView category="pastries" />}
