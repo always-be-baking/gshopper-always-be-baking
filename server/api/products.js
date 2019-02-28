@@ -17,7 +17,7 @@ router.get('/:category/:productId', async (req, res, next) => {
     const id = req.params.productId
     const product = await Product.findOne({
       where: {
-        id
+        id: id
       }
     })
     res.json(product)
