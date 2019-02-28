@@ -1,14 +1,9 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-const Product_Order = db.define(
+const ProductOrder = db.define(
   'product_order',
   {
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
     quantity: {
       type: Sequelize.INTEGER,
       defaultValue: 0
@@ -21,9 +16,9 @@ const Product_Order = db.define(
   }
 )
 
-Product_Order.beforeCreate(function(quantity) {
+ProductOrder.beforeCreate(function(quantity) {
   if (quantity < 1) {
     throw new Error('You cannot have 0 quantity')
   }
 })
-module.exports = Product_Order
+module.exports = ProductOrder
