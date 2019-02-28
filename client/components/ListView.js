@@ -1,11 +1,18 @@
 import React, {Component} from 'react'
-import {connect} from 'http2'
+import {connect} from 'react-redux'
 import {fetchProducts} from '../store/productsReducer'
 
 export class ListView extends Component {
   componentDidMount() {
     this.props.fetchProducts(this.props.category)
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.category !== this.props.category) {
+      this.props.fetchProducts(this.props.category)
+    }
+  }
+
   render() {
     if (!this.props.products) {
       return (
@@ -32,7 +39,7 @@ export class ListView extends Component {
 }
 
 const mapStateToProps = state => ({
-  products: state.products
+  products: state.productsReducer.products
 })
 
 const mapDispatchToProps = dispatch => {

@@ -15,7 +15,7 @@ https://always-be-baking.herokuapp.com/
 ### MacOS/Linux
 
 * `npm install`
-* `npm start`
+* `npm run start-dev`
 * Open another terminal window; from there, `npm run seed` to seed the database
 
 ### Windows
