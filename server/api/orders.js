@@ -2,9 +2,9 @@ const router = require('express').Router()
 const {Order} = require('../db/models')
 module.exports = router
 
-router.get('/open', async (req, res, next) => {
+router.get('/:userId', async (req, res, next) => {
   try {
-    const userId = req.body.userId
+    const userId = req.params.userId
     const order = await Order.findOne({
       where: {
         userId,
@@ -17,9 +17,9 @@ router.get('/open', async (req, res, next) => {
   }
 })
 
-router.get('/history', async (req, res, next) => {
+router.get('/:userId/history', async (req, res, next) => {
   try {
-    const userId = req.body.userId
+    const userId = req.params.userId
     const cart = await ProductOrder.findAll({
       where: {
         userId,
