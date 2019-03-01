@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {fetchOneProduct} from '../store/productsReducer'
 import {Link} from 'react-router-dom'
 
-export class SingleProduct extends Component {
+class SingleProduct extends Component {
   constructor(props) {
     super(props)
     this.state = {name: '', quantity: 0}
@@ -20,6 +20,7 @@ export class SingleProduct extends Component {
   }
 
   handleChange(evt) {
+    console.log(evt)
     this.setState({
       [evt.name]: evt.value
     })

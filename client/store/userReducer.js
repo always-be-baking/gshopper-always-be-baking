@@ -46,9 +46,10 @@ export const deleteProductThunk = id => async dispatch => {
   }
 }
 
-export const updateQuantityThunk = idQuantity => async dispatch => {
+export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
   try {
-    const res = await axios.put('/api/productorder/', idQuantity)
+    const res = await axios.put('/api/productorder/', {id, quantity})
+    console.log('RESDATAAAAAAAA', res.data)
     const updatedProduct = res.data
     const action = updateQuantity(updatedProduct)
     dispatch(action)
@@ -57,9 +58,11 @@ export const updateQuantityThunk = idQuantity => async dispatch => {
   }
 }
 
-export const fetchCart = userId => async dispatch => {
+export const fetchCart = orderId => async dispatch => {
+  console.log('hitting fetchcart')
   try {
-    const res = await axios.get(`/api/productorder/${userId}`)
+    const res = await axios.get(`/api/productorder/${orderId}`)
+    console.log('CAARRRRRRTTTTT', res)
     const cartItems = res.data
     const action = getCart(cartItems)
     dispatch(action)
@@ -82,8 +85,9 @@ export const addProductToCart = product => async dispatch => {
 export const me = () => async dispatch => {
   try {
     const res = await axios.get('/auth/me')
-    const userCart = await axios.get(`/api/orders/${res.data.id}`)
-    const localUser = {...res.data, orderId: userCart.data.id}
+    const order = await axios.get(`/api/orders/${res.data.id}`)
+    const localUser = {...res.data, orderId: order.data.id}
+    // console.log('resdata api orders', localUser)
     dispatch(getUser(localUser || initialState.user))
   } catch (err) {
     console.error(err)
@@ -92,14 +96,18 @@ export const me = () => async dispatch => {
 
 export const auth = (email, password, method) => async dispatch => {
   let res
+  let order
+  let localUser
   try {
     res = await axios.post(`/auth/${method}`, {email, password})
+    order = await axios.get(`/api/orders/${res.data.id}`)
+    localUser = {...res.data, orderId: order.data.id}
   } catch (authError) {
     return dispatch(getUser({error: authError}))
   }
 
   try {
-    dispatch(getUser(res.data))
+    dispatch(getUser(localUser))
     history.push('/home')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
