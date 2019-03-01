@@ -36,15 +36,20 @@ router.put('/', async (req, res, next) => {
   try {
     const quantity = req.body.quantity
     const id = req.body.id
-    const item = await ProductOrder.findOne({
-      where: {
-        id
+    const updatedCartItem = await ProductOrder.update(
+      {
+        quantity
+      },
+      {
+        where: {
+          id
+        },
+        returning: true,
+        plain: true
       }
-    })
-    const updatedCartItem = await item.update({
-      quantity
-    })
-    res.status(204).json(updatedCartItem)
+    )
+    console.log('updatedcartitem', updatedCartItem[1].dataValues)
+    res.status(204).json(updatedCartItem[1].dataValues)
   } catch (error) {
     next(error)
   }

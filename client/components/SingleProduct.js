@@ -3,9 +3,12 @@ import {connect} from 'react-redux'
 import {fetchOneProduct} from '../store/productsReducer'
 import {Link} from 'react-router-dom'
 
-export class SingleProduct extends Component {
+class SingleProduct extends Component {
   constructor(props) {
     super(props)
+    this.state = {name: '', quantity: 0}
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
   async componentDidMount() {
     console.log('component did mount', this.props.match)
@@ -16,12 +19,22 @@ export class SingleProduct extends Component {
     }
   }
 
+  handleChange(evt) {
+    console.log(evt)
+    this.setState({
+      [evt.name]: evt.value
+    })
+  }
+
+  handleSubmit(evt) {
+    evt.preventDefault()
+    this.props.thunkhere()
+  }
+
   render() {
     // console.log('rendering')
     if (!this.props.selectedProduct) {
       return <div>loading...</div>
-
-   
     }
     // if (!this.props.category) {
     //   return (
@@ -34,10 +47,8 @@ export class SingleProduct extends Component {
     console.log(this.props.selectedProduct, 'PRODUCT?')
     return (
       <div>
-        hello
         <h2>{this.props.products}</h2>
         <ul>
-
           <div key={this.props.selectedProduct.id}>
             <p>{this.props.selectedProduct.name}</p>
             <Link to={`/${this.props.selectedProduct.category}`}>
@@ -47,6 +58,26 @@ export class SingleProduct extends Component {
             <p>{this.props.selectedProduct.price}</p>
             <p>{this.props.selectedProduct.description}</p>
 
+            <form onSubmit={this.handleSubmit}>
+              <label>
+                Quantity
+                <input
+                  type="number"
+                  value={this.state.quantity}
+                  onChange={this.handleChange}
+                  min="0"
+                />
+              </label>
+              <button
+                type="button"
+                className="cart"
+                onClick={() => {
+                  this.handleChange(this.props.selectedProduct)
+                }}
+              >
+                Add to Cart
+              </button>
+            </form>
           </div>
         </ul>
       </div>
@@ -57,13 +88,11 @@ export class SingleProduct extends Component {
 const mapStateToProps = state => ({
   // products: state.products,
   selectedProduct: state.productsReducer.selectedProduct
-
 })
 
 const mapDispathToProps = dispatch => {
   return {
     fetchOneProduct: id => dispatch(fetchOneProduct(id))
-
   }
 }
 
