@@ -35,12 +35,10 @@ router.post('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   try {
     const quantity = req.body.quantity
-    const productId = req.body.productId
-    const orderId = req.body.orderId
+    const id = req.body.id
     const item = await ProductOrder.findOne({
       where: {
-        productId,
-        orderId
+        id
       }
     })
     const updatedCartItem = await item.update({
@@ -54,12 +52,10 @@ router.put('/', async (req, res, next) => {
 
 router.delete('/', async (req, res, next) => {
   try {
-    const productId = req.body.productAndOrderId.productId
-    const orderId = req.body.productAndOrderId.orderId
+    const id = req.body.id
     await ProductOrder.destroy({
       where: {
-        productId,
-        orderId
+        id
       }
     })
     res.status(202)

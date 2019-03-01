@@ -36,19 +36,19 @@ const deleteProduct = ids => ({type: DELETE_PRODUCT, ids})
  * THUNK CREATORS
  */
 
-export const deleteProductThunk = productAndOrderId => async dispatch => {
+export const deleteProductThunk = id => async dispatch => {
   try {
-    await axios.put('/api/productorder/', productAndOrderId)
-    const action = deleteProduct(productAndOrderId)
+    await axios.put('/api/productorder/', id)
+    const action = deleteProduct(id)
     dispatch(action)
   } catch (error) {
     console.error(error)
   }
 }
 
-export const updateQuantityThunk = product => async dispatch => {
+export const updateQuantityThunk = idQuantity => async dispatch => {
   try {
-    const res = await axios.put('/api/productorder/', product)
+    const res = await axios.put('/api/productorder/', idQuantity)
     const updatedProduct = res.data
     const action = updateQuantity(updatedProduct)
     dispatch(action)
