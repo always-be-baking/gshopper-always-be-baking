@@ -35,6 +35,7 @@ router.post('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   try {
     const quantity = req.body.quantity
+    console.log(quantity, 'quantity')
     const id = req.body.id
     const updatedCartItem = await ProductOrder.update(
       {
@@ -48,8 +49,7 @@ router.put('/', async (req, res, next) => {
         plain: true
       }
     )
-    console.log('updatedcartitem', updatedCartItem[1].dataValues)
-    res.status(204).json(updatedCartItem[1].dataValues)
+    res.status(200).json(updatedCartItem[1])
   } catch (error) {
     next(error)
   }
