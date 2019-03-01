@@ -28,13 +28,30 @@ describe('thunk creators', () => {
   })
 
   describe('me', () => {
-    xit('eventually dispatches the GET USER action', async () => {
-      const fakeUser = {id: 1, email: 'Cody'}
+    it('eventually dispatches the GET USER action', async () => {
+      const fakeUser = {
+        id: 1,
+        firstName: 'cody',
+        lastName: 'smith',
+        email: 'cody@email.com',
+        password: '123',
+        shippingAddress: '5 hannover sq New York City, NY 10000',
+        billingAddress: '5 hannover sq New York City, NY 10000'
+      }
+      const fakeCart = {
+        id: 1,
+        bought: false,
+        userId: 1
+      }
       mockAxios.onGet('/auth/me').replyOnce(200, fakeUser)
+      mockAxios.onGet('/api/orders/1').replyOnce(200, fakeCart)
       await store.dispatch(me())
       const actions = store.getActions()
       expect(actions[0].type).to.be.equal('GET_USER')
-      expect(actions[0].user).to.be.deep.equal(fakeUser)
+      expect(actions[0].user).to.be.deep.equal({
+        ...fakeUser,
+        orderId: fakeCart.id
+      })
     })
   })
 
