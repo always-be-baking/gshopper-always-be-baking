@@ -9,7 +9,8 @@ import {
   ListView,
   HomePage,
   SingleProduct,
-  Cart
+  Cart,
+  Checkout
 } from './components'
 
 import {me} from './store'
@@ -32,6 +33,7 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route exact path="/cart" component={Cart} />
+        <Route path="/checkout" component={Checkout} />
 
         <Route
           exact
