@@ -17,45 +17,45 @@ class Cart extends Component {
   }
 
   handleQuantity(id, event) {
-    console.log(id, event.target.value)
     const sendData = {quantity: event.target.value, id}
     this.props.updateQuantityThunk(sendData)
   }
 
-  handleDelete(id) {
-    this.props.deleteProductThunk(id)
+  async handleDelete(id) {
+    console.log('DELETE CLICKED')
+    await this.props.deleteProductThunk(id)
   }
 
   async componentDidMount() {
-    console.log('cart mounted')
     try {
       await this.props.fetchCart(this.props.user.orderId)
-      console.log(this.props.user)
     } catch (error) {
       console.error('fetch did not work:::', error)
     }
   }
   render() {
-    console.log('rendering!!!!!!!!!!!!!')
     return (
       <div>
         {this.props.cart[0] &&
           this.props.cart.map(item => {
             return (
               <div key={item.id}>
-                {item.name}
-                Quantity: {item.quantity}
+                <img src={item.product.imageUrl} />
+                <br /> {item.product.name}
+                <br /> Quantity: {item.quantity}
                 <form>
                   <label>
                     CHANGE QUANTITY
                     <input
                       type="number"
-                      itemID={item.id}
                       onChange={evt => this.handleQuantity(item.id, evt)}
                     />
                   </label>
                 </form>
-                <button type="button" onClick={() => this.handleDelete(id)}>
+                <button
+                  type="button"
+                  onClick={() => this.handleDelete(item.id)}
+                >
                   DELETE ITEM
                 </button>
               </div>
