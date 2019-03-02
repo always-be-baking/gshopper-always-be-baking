@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  background-color: #fff4e3;
 }
 
 a {
@@ -10,11 +11,66 @@ label {
   display: block;
 }
 
-nav a {
-  display: inline-block;
+h1 {
+  position: relative;
+  text-align: center;
+  margin-top: 0px;
+  font-size: 50px;
+}
+
+#logo {
+  width: 140px;
+  max-height: 140px;
+}
+nav {
+  background-color: #5d5d5a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-style: Arial Narrow, sans-serif;
+}
+
+.categories,
+.user {
+  display: flex;
+  text-align: center;
+  font-size: 15px;
+}
+
+.categories a,
+.user a {
+  color: #fff4e3;
+  font-family: 'Roboto Condensed', sans-serif;
+  margin: 1em;
+}
+
+#cart {
   margin: 1em;
   display: flex;
-  justify-content: space-evenly;
+  color: red;
+  text-align: center;
+}
+
+.homeCategories {
+  margin-top: 70px;
+  margin-left: 20px;
+  margin-right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.homeCategories a img {
+  height: 230px;
+  width: auto;
+}
+
+.homeCategories a p {
+  font-size: 30px;
+  font-weight: bold;
+  color: #5d5d5a;
+  text-align: center;
+  margin-top: 20px;
 }
 
 form div {
