@@ -25,12 +25,12 @@ const initialState = {
 const getUser = user => ({type: GET_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
 const getCart = cartItems => ({type: GET_CART, cartItems})
-const addProduct = product => ({type: ADD_PRODUCT, product})
+const addProduct = cartItem => ({type: ADD_PRODUCT, cartItem})
 const updateQuantity = updatedProduct => ({
   type: UPDATE_QUANTITY,
   updatedProduct
 })
-const deleteProduct = ids => ({type: DELETE_PRODUCT, ids})
+const deleteProduct = id => ({type: DELETE_PRODUCT, id})
 
 /**
  * THUNK CREATORS
@@ -38,7 +38,8 @@ const deleteProduct = ids => ({type: DELETE_PRODUCT, ids})
 
 export const deleteProductThunk = id => async dispatch => {
   try {
-    await axios.put('/api/productorder/', id)
+    console.log('deleteThunk reached, ', id)
+    await axios.delete(`/api/productorder/${id}`)
     const action = deleteProduct(id)
     dispatch(action)
   } catch (error) {
@@ -59,10 +60,8 @@ export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
 }
 
 export const fetchCart = orderId => async dispatch => {
-  console.log('hitting fetchcart')
   try {
     const res = await axios.get(`/api/productorder/${orderId}`)
-    console.log('CAARRRRRRTTTTT', res)
     const cartItems = res.data
     const action = getCart(cartItems)
     dispatch(action)
@@ -71,9 +70,18 @@ export const fetchCart = orderId => async dispatch => {
   }
 }
 
-export const addProductToCart = product => async dispatch => {
+export const addProductToCart = ({
+  quantity,
+  productId,
+  orderId
+}) => async dispatch => {
   try {
-    const res = await axios.post('/api/productorder', product)
+    const res = await axios.post('/api/productorder', {
+      quantity,
+      productId,
+      orderId
+    })
+    console.log('ADD TO CART THUNK RESPONSE', res)
     const addedProduct = res.data
     const action = addProduct(addedProduct)
     dispatch(action)
@@ -130,15 +138,10 @@ export const logout = () => async dispatch => {
 export default function(state = initialState, action) {
   switch (action.type) {
     case DELETE_PRODUCT:
+      console.log('DELETE REDUCER REACHED')
       return {
         ...state,
-        cart: state.cart.filter(item => {
-          if (
-            item.productId !== action.ids.productId &&
-            item.orderId !== action.ids.orderId
-          )
-            return true
-        })
+        cart: state.cart.filter(item => item.id !== action.id)
       }
     case UPDATE_QUANTITY:
       return {
@@ -150,7 +153,16 @@ export default function(state = initialState, action) {
         })
       }
     case ADD_PRODUCT:
-      return {...state, cart: [...state.cart, action.addedProduct]}
+      return {
+        ...state,
+        cart: state.cart.map(item => {
+          if (item.id === action.cartItem.id) {
+            return action.cartItem
+          } else {
+            return item
+          }
+        })
+      }
     case GET_CART:
       return {...state, cart: action.cartItems}
     case GET_USER:

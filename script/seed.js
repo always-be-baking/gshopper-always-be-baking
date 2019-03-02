@@ -73,6 +73,18 @@ async function seed() {
       quantity: 20,
       productId: 2,
       orderId: 2
+    }),
+    ProductOrder.create({
+      userId: 2,
+      quantity: 22,
+      productId: 3,
+      orderId: 2
+    }),
+    ProductOrder.create({
+      userId: 1,
+      quantity: 33,
+      productId: 2,
+      orderId: 1
     })
   ])
 
