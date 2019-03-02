@@ -28,11 +28,9 @@ const getSelectedProduct = product => ({type: GET_ONE_PRODUCT, product})
 //get all products thunk
 export const fetchProducts = category => async dispatch => {
   try {
-    console.log('thunk category', category)
     const cat = category
     const res = await axios.get(`/api/products/${cat}`)
     const data = res.data
-    console.log('cat data', data)
     const action = getProducts(data)
     dispatch(action)
   } catch (error) {
@@ -42,7 +40,6 @@ export const fetchProducts = category => async dispatch => {
 
 export const fetchOneProduct = productId => async dispatch => {
   try {
-    console.log(productId, 'productId~~~~~~~~~~~~~~~~~~~')
     const res = await axios.get(`/api/products/category/${productId}`)
     const data = res.data
     const action = getSelectedProduct(data)
