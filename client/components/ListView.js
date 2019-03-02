@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link, Route} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {fetchProducts} from '../store/productsReducer'
-import {SingleProduct} from './SingleProduct'
 
 export class ListView extends Component {
   componentDidMount() {
@@ -32,8 +31,8 @@ export class ListView extends Component {
           <div key={product.id}>
             <Link to={`/${this.props.category}/${product.id}`}>
               <p>{product.name}</p>
+              <img src={product.image} style={{width: '150px'}} />
             </Link>
-            <img src={product.image} />
             <p>{product.price}</p>
           </div>
         ))}
