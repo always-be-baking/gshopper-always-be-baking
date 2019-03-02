@@ -26,6 +26,12 @@ class Checkout extends Component {
     this.props.history.push('/thanks')
   }
 
+  componentWillMount() {
+    if (!this.props.user.id) {
+      this.props.history.push('/login')
+    }
+  }
+
   async componentDidMount() {
     try {
       await this.props.fetchCart(this.props.user.orderId)

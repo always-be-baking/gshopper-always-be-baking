@@ -23,10 +23,15 @@ import {me} from './store'
 class Routes extends Component {
   componentDidMount() {
     this.props.loadInitialData()
+
+    if (!localStorage.cart) {
+      console.log('localStorage cart created')
+      localStorage.setItem('cart', JSON.stringify([]))
+    }
   }
 
   render() {
-    console.log('THIS IS ROUTES RENDERING')
+    console.log('Routes component rendering.')
     const {isLoggedIn} = this.props
 
     return (

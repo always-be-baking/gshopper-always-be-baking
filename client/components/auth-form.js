@@ -61,7 +61,7 @@ const mapDispatch = dispatch => {
   return {
     handleSubmit(evt) {
       evt.preventDefault()
-      console.log('AUTH THUNK ON AUTH-FORM REACHED')
+      console.log('LoginComponent: auth thunk called.')
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value

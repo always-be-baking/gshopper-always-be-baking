@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import {logout} from '../store'
 
 const Navbar = ({handleClick, isLoggedIn, user}) => {
-  console.log('rendering')
+  console.log('navBar component rendering.')
   return (
     <div>
       <nav>
@@ -28,7 +28,11 @@ const Navbar = ({handleClick, isLoggedIn, user}) => {
           ) : (
             <Link to="/login">LOGIN</Link>
           )}
-          <Link to="/signup">SIGN UP</Link>
+          <Link to="/signup">Sign Up</Link>
+          <Link to="/myaccount">My Account</Link>
+          <Link to="/cart">Cart</Link>
+          <Link to="/checkout">Checkout</Link>
+
         </div>
       </nav>
     </div>
@@ -36,7 +40,10 @@ const Navbar = ({handleClick, isLoggedIn, user}) => {
 }
 
 const mapState = state => {
-  console.log('navBar mapState returning props', !!state.userReducer.id)
+  console.log(
+    'navBar component mapState returning props',
+    !!state.userReducer.id
+  )
   return {
     isLoggedIn: !!state.userReducer.id,
     user: state.userReducer.user
