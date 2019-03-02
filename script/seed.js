@@ -32,28 +32,36 @@ async function seed() {
       category: 'cookies',
       price: 2,
       description: 'yum',
-      inventory: 12
+      inventory: 12,
+      image:
+        'https://bwog.com/wp-content/uploads/2012/12/shutterstock_63002695.jpg'
     },
     {
       name: 'peanut butter cookie',
       category: 'cookies',
       price: 1.5,
       description: 'yum',
-      inventory: 12
+      inventory: 12,
+      image:
+        'https://bwog.com/wp-content/uploads/2012/12/shutterstock_63002695.jpg'
     },
     {
       name: 'fancy cake',
       category: 'cakes',
       price: 6,
       description: 'yum',
-      inventory: 12
+      inventory: 12,
+      image:
+        'https://bwog.com/wp-content/uploads/2012/12/shutterstock_63002695.jpg'
     },
     {
       name: 'croissant',
       category: 'pastries',
       price: 1,
       description: 'yum',
-      inventory: 30
+      inventory: 30,
+      image:
+        'https://bwog.com/wp-content/uploads/2012/12/shutterstock_63002695.jpg'
     }
   ]
 

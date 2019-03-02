@@ -73,8 +73,10 @@ export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
 
 export const fetchCart = orderId => async dispatch => {
   try {
+    console.log('userReducer: fetchCart thunk called.')
     const res = await axios.get(`/api/productorder/${orderId}`)
     const cartItems = res.data
+    console.log('userReducer: fetchCart thunk: res.data: ', cartItems)
     const action = getCart(cartItems)
     dispatch(action)
   } catch (error) {
@@ -114,7 +116,7 @@ export const checkoutThunk = userId => async dispatch => {
 
 export const me = () => async dispatch => {
   try {
-    console.log('ME THUNK REACHED')
+    console.log('userReducer: me thunk reached.')
     const user = await axios.get('/auth/me')
     const order = await axios.get(`/api/orders/${user.data.id}`)
     console.log('INSIDE ME THUNK', user.data, order)
@@ -138,8 +140,9 @@ export const auth = (email, password, method) => async dispatch => {
   }
 
   try {
+    console.log('userReducer: auth dispatch reached, user/password found.')
     dispatch(getUser(localUser))
-    console.log('AUTH DISPATCH GETUSER SENT')
+
     history.push('/')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
