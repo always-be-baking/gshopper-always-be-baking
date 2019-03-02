@@ -7,88 +7,104 @@ async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const users = await Promise.all([
-    User.create({
+  const users = [
+    {
       firstName: 'cody',
       lastName: 'smith',
       email: 'cody@email.com',
       password: '123',
       shippingAddress: '5 hannover sq New York City, NY 10000',
       billingAddress: '5 hannover sq New York City, NY 10000'
-    }),
-    User.create({
+    },
+    {
       firstName: 'emmy',
       lastName: 'panken',
       email: 'murphy@email.com',
       password: '123',
       shippingAddress: '5 hannover sq New York City, NY 10000',
       billingAddress: '5 hannover sq New York City, NY 10000'
-    })
-  ])
+    }
+  ]
 
-  const product = await Promise.all([
-    Product.create({
+  const products = [
+    {
       name: 'choc chip cookie',
       category: 'cookies',
       price: 12,
       description: 'yum',
       inventory: 12
-    }),
-    Product.create({
+    },
+    {
+      name: 'choc chip cookie',
+      category: 'cookies',
+      price: 12,
+      description: 'yum',
+      inventory: 12
+    },
+    {
       name: 'fancy cake',
       category: 'cakes',
       price: 6,
       description: 'yum',
       inventory: 12
-    }),
-    Product.create({
+    },
+    {
       name: 'croissant',
       category: 'pastries',
       price: 1,
       description: 'yum',
       inventory: 30
-    })
-  ])
+    }
+  ]
 
-  const orders = await Promise.all([
-    Order.create({
+  const orders = [
+    {
       userId: 1,
       bought: false
-    }),
-    Order.create({
+    },
+    {
       userId: 2,
       bought: false
-    })
-  ])
+    }
+  ]
 
-  const productOrders = await Promise.all([
-    ProductOrder.create({
+  const productOrders = [
+    {
       userId: 1,
       quantity: 13,
       productId: 1,
       orderId: 1
-    }),
-    ProductOrder.create({
+    },
+    {
       userId: 2,
       quantity: 20,
       productId: 2,
       orderId: 2
-    }),
-    ProductOrder.create({
+    },
+    {
       userId: 2,
       quantity: 22,
       productId: 3,
       orderId: 2
-    }),
-    ProductOrder.create({
+    },
+    {
       userId: 1,
       quantity: 33,
       productId: 2,
       orderId: 1
-    })
-  ])
+    }
+  ]
 
-  console.log(`seeded ${users.length} users`)
+  await Promise.all(users.map(user => User.create(user)))
+  await Promise.all(products.map(product => Product.create(product)))
+  await Promise.all(orders.map(order => Order.create(order)))
+  await Promise.all(productOrders.map(prodOrd => ProductOrder.create(prodOrd)))
+
+  console.log(
+    `seeded ${users.length} users, ${products.length} products, ${
+      orders.length
+    } orders, ${productOrders.length} cartItems`
+  )
   console.log(`seeded successfully`)
 }
 

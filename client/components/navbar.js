@@ -1,44 +1,41 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Link, Route} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {logout} from '../store'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <h1>Welcome to our bakery!</h1>
-    <nav>
-      {isLoggedIn ? (
+const Navbar = ({handleClick, isLoggedIn, user}) => {
+  console.log('rendering')
+  return (
+    <div>
+      <h1>Welcome to our bakery!</h1>
+      <nav>
         <div>
-          {/* The navbar will show these links after you log in */}
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
           <Link to="/cookies">Cookies</Link>
           <Link to="/cakes">Cakes</Link>
           <Link to="/pastries">Pastries</Link>
-          <Link to="/login">Login</Link>
+          {user.id ? (
+            <a href="#" onClick={handleClick}>
+              Logout
+            </a>
+          ) : (
+            <Link to="/login">Login</Link>
+          )}
           <Link to="/signup">Sign Up</Link>
           <Link to="/cart">Cart</Link>
           <Link to="/checkout">Checkout</Link>
         </div>
-      )}
-    </nav>
-    <hr />
-  </div>
-)
+      </nav>
+      <hr />
+    </div>
+  )
+}
 
-/**
- * CONTAINER
- */
 const mapState = state => {
-  console.log('state', state)
+  console.log('navBar mapState returning props', !!state.userReducer.id)
   return {
-    isLoggedIn: !!state.userReducer.id
+    isLoggedIn: !!state.userReducer.id,
+    user: state.userReducer.user
   }
 }
 
@@ -52,9 +49,6 @@ const mapDispatch = dispatch => {
 
 export default connect(mapState, mapDispatch)(Navbar)
 
-/**
- * PROP TYPES
- */
 Navbar.propTypes = {
   handleClick: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired

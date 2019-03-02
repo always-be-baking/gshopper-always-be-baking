@@ -6,10 +6,12 @@ import history from '../history'
  */
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
+const UPDATE_USER = 'UPDATE_USER'
 const GET_CART = 'GET_CART'
 const ADD_PRODUCT = 'ADD_PRODUCT'
 const UPDATE_QUANTITY = 'UPDATE_QUANTITY'
 const DELETE_PRODUCT = 'DELETE_PRODUCT'
+const CHECKOUT = 'CHECKOUT'
 
 /**
  * INITIAL STATE
@@ -31,17 +33,28 @@ const updateQuantity = updatedProduct => ({
   updatedProduct
 })
 const deleteProduct = id => ({type: DELETE_PRODUCT, id})
+const checkout = newOrderId => ({type: CHECKOUT, newOrderId})
+// const updateUser = user => ({type: UPDATE_USER, user})
 
 /**
  * THUNK CREATORS
  */
 
+export const updateUserThunk = user => async dispatch => {
+  try {
+    const updatedUser = await axios.put('/', user)
+    const order = await axios.get(`/api/orders/${user.id}`)
+    const localUser = {...updatedUser.data, orderId: order.data.id}
+    dispatch(getUser(localUser))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const deleteProductThunk = id => async dispatch => {
   try {
-    console.log('deleteThunk reached, ', id)
     await axios.delete(`/api/productorder/${id}`)
-    const action = deleteProduct(id)
-    dispatch(action)
+    dispatch(deleteProduct(id))
   } catch (error) {
     console.error(error)
   }
@@ -50,7 +63,6 @@ export const deleteProductThunk = id => async dispatch => {
 export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
   try {
     const res = await axios.put('/api/productorder/', {id, quantity})
-    console.log('RESDATAAAAAAAA', res.data)
     const updatedProduct = res.data
     const action = updateQuantity(updatedProduct)
     dispatch(action)
@@ -82,7 +94,7 @@ export const addProductToCart = ({
       productId,
       orderId
     })
-    console.log('ADD TO CART THUNK RESPONSE', res)
+    // console.log('ADD TO CART THUNK RESPONSE', res)
     const addedProduct = res.data
     const action = addProduct(addedProduct)
     dispatch(action)
@@ -91,8 +103,19 @@ export const addProductToCart = ({
   }
 }
 
+export const checkoutThunk = userId => async dispatch => {
+  try {
+    await axios.put(`/api/orders/${userId}`)
+    const res = await axios.post('/api/orders', userId)
+    dispatch(checkout(res.data.id))
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const me = () => async dispatch => {
   try {
+    console.log('running auth me')
     const res = await axios.get('/auth/me')
     const order = await axios.get(`/api/orders/${res.data.id}`)
     const localUser = {...res.data, orderId: order.data.id}
@@ -166,10 +189,17 @@ export default function(state = initialState, action) {
       }
     case GET_CART:
       return {...state, cart: action.cartItems}
+    case CHECKOUT:
+      return {
+        ...state,
+        user: {...state.user, orderId: action.newOrderId}
+      }
     case GET_USER:
       return {...state, user: action.user}
     case REMOVE_USER:
       return {...state, ...initialState}
+    case UPDATE_USER:
+      return {...state, user: action.user}
     default:
       return state
   }
