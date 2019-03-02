@@ -38,10 +38,8 @@ const deleteProduct = id => ({type: DELETE_PRODUCT, id})
 
 export const deleteProductThunk = id => async dispatch => {
   try {
-    console.log('deleteThunk reached, ', id)
     await axios.delete(`/api/productorder/${id}`)
-    const action = deleteProduct(id)
-    dispatch(action)
+    dispatch(deleteProduct(id))
   } catch (error) {
     console.error(error)
   }
@@ -50,7 +48,6 @@ export const deleteProductThunk = id => async dispatch => {
 export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
   try {
     const res = await axios.put('/api/productorder/', {id, quantity})
-    console.log('RESDATAAAAAAAA', res.data)
     const updatedProduct = res.data
     const action = updateQuantity(updatedProduct)
     dispatch(action)
@@ -81,7 +78,7 @@ export const addProductToCart = ({
       productId,
       orderId
     })
-    console.log('ADD TO CART THUNK RESPONSE', res)
+    // console.log('ADD TO CART THUNK RESPONSE', res)
     const addedProduct = res.data
     const action = addProduct(addedProduct)
     dispatch(action)

@@ -33,10 +33,11 @@ class Cart extends Component {
       console.error('fetch did not work:::', error)
     }
   }
+
   render() {
     return (
       <div>
-        {this.props.cart[0] &&
+        {this.props.cart.length ? (
           this.props.cart.map(item => {
             return (
               <div key={item.id}>
@@ -60,7 +61,10 @@ class Cart extends Component {
                 </button>
               </div>
             )
-          })}
+          })
+        ) : (
+          <h1>No items in cart!</h1>
+        )}
       </div>
     )
   }
