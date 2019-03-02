@@ -23,6 +23,7 @@ class SingleProduct extends Component {
   }
 
   handleChange(evt) {
+    console.log(evt)
     this.setState({
       [evt.target.name]: evt.target.value
     })
