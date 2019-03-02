@@ -45,7 +45,6 @@ class SingleProduct extends Component {
       return <div>loading...</div>
     }
 
-    console.log(this.props.selectedProduct, 'PRODUCT?')
     return (
       <div>
         <h2>{this.props.products}</h2>
