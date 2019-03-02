@@ -30,14 +30,14 @@ async function seed() {
     {
       name: 'choc chip cookie',
       category: 'cookies',
-      price: 12,
+      price: 2,
       description: 'yum',
       inventory: 12
     },
     {
-      name: 'choc chip cookie',
+      name: 'peanut butter cookie',
       category: 'cookies',
-      price: 12,
+      price: 1.5,
       description: 'yum',
       inventory: 12
     },

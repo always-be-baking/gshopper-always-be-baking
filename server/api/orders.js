@@ -44,3 +44,25 @@ router.post('/', async (req, res, next) => {
     next(error)
   }
 })
+
+router.put('/:userId', async (req, res, next) => {
+  try {
+    const userId = req.params.userId
+    const completedOrder = await Order.update(
+      {
+        bought: true
+      },
+      {
+        where: {
+          userId,
+          bought: false
+        },
+        returning: true,
+        plain: true
+      }
+    )
+    res.status(204).json(completedOrder)
+  } catch (error) {
+    next(error)
+  }
+})
