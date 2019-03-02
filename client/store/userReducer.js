@@ -61,6 +61,7 @@ export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
 
 export const fetchCart = orderId => async dispatch => {
   try {
+    console.log('fetch cart thunk')
     const res = await axios.get(`/api/productorder/${orderId}`)
     const cartItems = res.data
     const action = getCart(cartItems)

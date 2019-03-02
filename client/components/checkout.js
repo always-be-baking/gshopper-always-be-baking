@@ -1,18 +1,15 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchCart} from '../store/userReducer'
-import {fetchProduct} from '../store/productsReducer'
+import {fetchOneProduct} from '../store/productsReducer'
 
 class Checkout extends Component {
   constructor(props) {
     super(props)
     this.state = {
       cart: [],
-      product: [],
-      firstName: '',
-      lastName: '',
-      shippingAddress: '',
-      billingAddress: ''
+      //   product: [],
+      user: []
     }
     this.handlChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -31,26 +28,31 @@ class Checkout extends Component {
 
   async componentDidMount() {
     console.log('cart mounted')
+    // console.log('cat product id', this.props.cart.product.id)
     try {
+      console.log('THIS.PROPS', this.props)
       await this.props.fetchCart(this.props.user.orderId)
-      await this.props.fetchProduct(this.props.cart.productId)
-      console.log('did this work', this.props.product)
+      console.log('did this work', this.props)
+      //   await this.props.fetchOneProduct(this.props.cart[0].product.id)
     } catch (error) {
       console.error('fetch did not work', error)
     }
   }
 
   render() {
-    console.log(this.props, 'user')
+    console.log('PROPS', this.props.cart[0])
     return (
       <div>
-        {<div>something</div>}
+        {/* {<div>{this.props.product}</div>} */}
         {this.props.cart.map(item => (
           <div key={item.id}>
-            <p>{item.quantity}</p>
+            <p>Name of Product: {item.product.name}</p>
+            <p>Quantity Selected: {item.quantity}</p>
+            <p>Price per Product: ${item.product.price}</p>
+            <p>Total Amount Due: $ {item.quantity * item.product.price}</p>
           </div>
         ))}
-        <h2>Checkout</h2>
+        <h2>Payment and Billing Information</h2>
         <form onSubmit={this.handleSubmit}>
           First Name :
           <input
@@ -97,13 +99,13 @@ class Checkout extends Component {
 
 const mapStateToProps = state => ({
   user: state.userReducer.user,
-  cart: state.userReducer.cart,
-  products: state.productsReducer.products
+  cart: state.userReducer.cart
+  //   products: state.productsReducer.products
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchCart: userId => dispatch(fetchCart(userId)),
-  fetchProduct: productId => dispatch(fetchProduct(productId))
+  fetchCart: userId => dispatch(fetchCart(userId))
+  //   fetchOneProduct: productId => dispatch(fetchOneProduct(productId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout)
