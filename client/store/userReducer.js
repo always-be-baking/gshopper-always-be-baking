@@ -12,13 +12,15 @@ const ADD_PRODUCT = 'ADD_PRODUCT'
 const UPDATE_QUANTITY = 'UPDATE_QUANTITY'
 const DELETE_PRODUCT = 'DELETE_PRODUCT'
 const CHECKOUT = 'CHECKOUT'
+const GET_ORDER_HISTORY = ' GET_ORDER_HISTORY'
 
 /**
  * INITIAL STATE
  */
 const initialState = {
   user: {},
-  cart: []
+  cart: [],
+  orders: []
 }
 
 /**
@@ -34,7 +36,7 @@ const updateQuantity = updatedProduct => ({
 })
 const deleteProduct = id => ({type: DELETE_PRODUCT, id})
 const checkout = newOrderId => ({type: CHECKOUT, newOrderId})
-// const updateUser = user => ({type: UPDATE_USER, user})
+const getOrderHistory = orders => ({type: GET_ORDER_HISTORY, orders})
 
 /**
  * THUNK CREATORS
@@ -114,12 +116,24 @@ export const checkoutThunk = userId => async dispatch => {
   }
 }
 
+export const fetchOrderHistory = userId => async dispatch => {
+  try {
+    console.log('FETCH HISTORY', userId)
+    const res = await axios.get(`/api/orders/${userId}/history`)
+    const orderHistory = res.data
+
+    const action = getOrderHistory(orderHistory)
+    dispatch(action)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const me = () => async dispatch => {
   try {
     console.log('userReducer: me thunk reached.')
     const user = await axios.get('/auth/me')
     const order = await axios.get(`/api/orders/${user.data.id}`)
-    console.log('INSIDE ME THUNK', user.data, order)
     const localUser = {...user.data, orderId: order.data.id}
     dispatch(getUser(localUser || initialState.user))
   } catch (err) {
@@ -203,6 +217,9 @@ export default function(state = initialState, action) {
       return {...state, ...initialState}
     case UPDATE_USER:
       return {...state, user: action.user}
+
+    case GET_ORDER_HISTORY:
+      return {...state, orders: action.orders}
     default:
       return state
   }

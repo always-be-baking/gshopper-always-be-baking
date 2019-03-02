@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link, Route} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {fetchProducts} from '../store/productsReducer'
-import {SingleProduct} from './SingleProduct'
 
 export class ListView extends Component {
   componentDidMount() {

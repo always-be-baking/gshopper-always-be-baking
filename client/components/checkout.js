@@ -42,7 +42,6 @@ class Checkout extends Component {
   }
 
   render() {
-    console.log(this.state, 'THIS STATE')
     return (
       <div>
         {/* {<div>{this.props.product}</div>} */}

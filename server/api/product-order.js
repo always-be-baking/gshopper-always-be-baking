@@ -75,7 +75,7 @@ router.put('/', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
   try {
     const id = req.params.id
-    console.log('delete route reached', id)
+    // console.log('delete route reached', id)
     await ProductOrder.destroy({
       where: {
         id
