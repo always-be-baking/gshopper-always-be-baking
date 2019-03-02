@@ -1,17 +1,20 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchOneProduct} from '../store/productsReducer'
+import {addProductToCart} from '../store/userReducer'
 import {Link} from 'react-router-dom'
 
 class SingleProduct extends Component {
   constructor(props) {
     super(props)
-    this.state = {name: '', quantity: 0}
+    this.state = {
+      quantity: 1
+    }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   async componentDidMount() {
-    console.log('component did mount', this.props.match)
+    // console.log('component did mount', this.props.match)
     try {
       await this.props.fetchOneProduct(this.props.match.params.id)
     } catch (err) {
@@ -22,28 +25,26 @@ class SingleProduct extends Component {
   handleChange(evt) {
     console.log(evt)
     this.setState({
-      [evt.name]: evt.value
+      [evt.target.name]: evt.target.value
     })
   }
 
   handleSubmit(evt) {
     evt.preventDefault()
-    this.props.thunkhere()
+    console.log(evt.target)
+    let productId = this.props.selectedProduct.id
+    let quantity = Number(this.state.quantity)
+    let orderId = this.props.user.orderId
+    let obj = {productId, quantity, orderId}
+    console.log('ADD TO CART CLICKED!!! req.body: ', obj)
+    this.props.addProductToCart(obj)
   }
 
   render() {
-    // console.log('rendering')
     if (!this.props.selectedProduct) {
       return <div>loading...</div>
     }
-    // if (!this.props.category) {
-    //   return (
-    //     <div>
-    //       Loading
-    //       <img src="https://d2jq2hx2dbkw6t.cloudfront.net/184/loading-645268_640.jpg" />
-    //     </div>
-    //   )
-    // }
+
     console.log(this.props.selectedProduct, 'PRODUCT?')
     return (
       <div>
@@ -63,18 +64,13 @@ class SingleProduct extends Component {
                 Quantity
                 <input
                   type="number"
+                  name="quantity"
                   value={this.state.quantity}
                   onChange={this.handleChange}
-                  min="0"
+                  min="1"
                 />
               </label>
-              <button
-                type="button"
-                className="cart"
-                onClick={() => {
-                  this.handleChange(this.props.selectedProduct)
-                }}
-              >
+              <button type="submit" className="cart">
                 Add to Cart
               </button>
             </form>
@@ -86,13 +82,14 @@ class SingleProduct extends Component {
 }
 
 const mapStateToProps = state => ({
-  // products: state.products,
-  selectedProduct: state.productsReducer.selectedProduct
+  selectedProduct: state.productsReducer.selectedProduct,
+  user: state.userReducer.user
 })
 
 const mapDispathToProps = dispatch => {
   return {
-    fetchOneProduct: id => dispatch(fetchOneProduct(id))
+    fetchOneProduct: id => dispatch(fetchOneProduct(id)),
+    addProductToCart: obj => dispatch(addProductToCart(obj))
   }
 }
 
