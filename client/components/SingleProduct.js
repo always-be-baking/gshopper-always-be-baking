@@ -67,6 +67,7 @@ class SingleProduct extends Component {
     if (!this.props.selectedProduct) {
       return <div>loading...</div>
     }
+
     return (
       <div>
         <div key={this.props.selectedProduct.id}>

@@ -11,5 +11,6 @@ export {default as Cart} from './cart'
 export {default as Checkout} from './checkout'
 export {default as Thanks} from './thanks'
 export {default as MyAccount} from './my-account'
+export {default as HomePage} from './HomePage'
 
 export {Login, Signup} from './auth-form'
