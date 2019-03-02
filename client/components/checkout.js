@@ -1,20 +1,15 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchCart} from '../store/userReducer'
-import {fetchProduct} from '../store/productsReducer'
+import {fetchCart, checkoutThunk, updateUserThunk} from '../store/userReducer'
 
 class Checkout extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      cart: [],
-      product: [],
-      firstName: '',
-      lastName: '',
       shippingAddress: '',
       billingAddress: ''
     }
-    this.handlChange = this.handleChange.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
@@ -24,69 +19,69 @@ class Checkout extends Component {
     })
   }
 
-  handleSubmit(evt) {
+  async handleSubmit(evt) {
     evt.preventDefault()
-    ////////////////////////////////////////need a thunk here
+    await this.props.checkoutThunk(this.props.user.id)
+    this.props.updateUserThunk(this.state)
+    this.props.history.push('/thanks')
   }
 
   async componentDidMount() {
-    console.log('cart mounted')
     try {
       await this.props.fetchCart(this.props.user.orderId)
-      await this.props.fetchProduct(this.props.cart.productId)
-      console.log('did this work', this.props.product)
+      await this.setState({...this.props.user})
     } catch (error) {
       console.error('fetch did not work', error)
     }
   }
 
   render() {
-    console.log(this.props, 'user')
+    console.log(this.state, 'THIS STATE')
     return (
       <div>
-        {<div>something</div>}
+        {/* {<div>{this.props.product}</div>} */}
         {this.props.cart.map(item => (
           <div key={item.id}>
-            <p>{item.quantity}</p>
+            <p>Name of Product: {item.product.name}</p>
+            <p>Quantity Selected: {item.quantity}</p>
+            <p>Price per Product: ${item.product.price}</p>
+            <br />
+            {/* <p>{subtotal +=item.quantity * item.product.price}</p> */}
           </div>
         ))}
-        <h2>Checkout</h2>
+        <div>
+          <h2>
+            Total Amount Due : $
+            {this.props.cart.reduce((total, item) => {
+              total += item.quantity * parseFloat(item.product.price)
+              //   console.log('total', total)
+              return total
+            }, 0)}
+          </h2>
+        </div>
+
+        <h2>Payment and Billing Information</h2>
         <form onSubmit={this.handleSubmit}>
-          First Name :
-          <input
-            type="text"
-            value={this.state.firstName}
-            onChange={this.handleChange}
-          />
-          <br />
-          Last Name :
-          <input
-            type="text"
-            value={this.state.lastName}
-            onChange={this.handleChange}
-          />
           <br />
           Shipping Address :
           <input
+            name="shippingAddress"
             type="text"
             value={this.state.shippingAddress}
             onChange={this.handleChange}
+            required={true}
           />
           <br />
           Billing Address :
           <input
+            name="billingAddress"
             type="text"
             value={this.state.billingAddress}
             onChange={this.handleChange}
+            required={true}
           />
           <br />
-          <button
-            type="button"
-            className="checkout"
-            onClick={() => {
-              this.handleChange(this.props.user)
-            }}
-          >
+          <button type="submit" className="checkout">
             Submit
           </button>
         </form>
@@ -97,13 +92,13 @@ class Checkout extends Component {
 
 const mapStateToProps = state => ({
   user: state.userReducer.user,
-  cart: state.userReducer.cart,
-  products: state.productsReducer.products
+  cart: state.userReducer.cart
 })
 
 const mapDispatchToProps = dispatch => ({
   fetchCart: userId => dispatch(fetchCart(userId)),
-  fetchProduct: productId => dispatch(fetchProduct(productId))
+  checkoutThunk: userId => dispatch(checkoutThunk(userId)),
+  updateUserThunk: user => dispatch(updateUserThunk(user))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout)

@@ -10,7 +10,8 @@ import {
   HomePage,
   SingleProduct,
   Cart,
-  Checkout
+  Checkout,
+  Thanks
 } from './components'
 
 import {me} from './store'
@@ -24,6 +25,7 @@ class Routes extends Component {
   }
 
   render() {
+    console.log('THIS IS ROUTES RENDERING')
     const {isLoggedIn} = this.props
 
     return (
@@ -34,6 +36,7 @@ class Routes extends Component {
         <Route path="/signup" component={Signup} />
         <Route exact path="/cart" component={Cart} />
         <Route path="/checkout" component={Checkout} />
+        <Route path="/thanks" component={Thanks} />
 
         <Route
           exact
