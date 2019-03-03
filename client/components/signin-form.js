@@ -7,41 +7,18 @@ import {auth} from '../store'
  * COMPONENT
  */
 class AuthForm extends Component {
-  constructor(props) {
-    super(props)
-    this.submitForm = this.submitForm.bind(this)
-  }
-  submitForm(evt) {
-    evt.preventDefault()
-    this.props.history.push('/login')
-  }
   render() {
     const {name, displayName, handleSubmit, error} = this.props
     return (
       <div>
-        <h2>Sign up for an account with us!</h2>
+        <h2>Please sign in!</h2>
         <form onSubmit={handleSubmit} name={name}>
-          <div>
-            <label htmlFor="firstName">
-              <small>First Name</small>
-            </label>
-            <input name="firstName" type="text" value={this.props.firstName} />
-          </div>
-
-          <div>
-            <label htmlFor="lastName">
-              <small>Last Name</small>
-            </label>
-            <input name="lastName" type="text" />
-          </div>
-          <br />
           <div>
             <label htmlFor="email">
               <small>Email</small>
             </label>
             <input name="email" type="text" />
           </div>
-
           <br />
           <div>
             <label htmlFor="password">
@@ -50,24 +27,9 @@ class AuthForm extends Component {
             <input name="password" type="password" />
           </div>
           <br />
+
           <div>
-            <label htmlFor="shippingAddress">
-              <small>Shipping Address</small>
-            </label>
-            <input name="shippingAddress" type="text" />
-          </div>
-          <br />
-          <div>
-            <label htmlFor="billingAddress">
-              <small>Billing Address</small>
-            </label>
-            <input name="billingAddress" type="text" />
-          </div>
-          <br />
-          <div>
-            <button type="submit" onClick={this.submitForm}>
-              {displayName}
-            </button>
+            <button type="submit">{displayName}</button>
           </div>
           {error && error.response && <div> {error.response.data} </div>}
         </form>
@@ -108,22 +70,7 @@ const mapDispatch = dispatch => {
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-
-      const firstName = evt.target.firstName.value
-      const lastName = evt.target.lastName.value
-      const billingAddress = evt.target.billingAddress.value
-      const shippingAddress = evt.target.shippingAddress.value
-      dispatch(
-        auth(
-          email,
-          password,
-          formName,
-          firstName,
-          lastName,
-          billingAddress,
-          shippingAddress
-        )
-      )
+      dispatch(auth(email, password, formName))
     }
   }
 }
