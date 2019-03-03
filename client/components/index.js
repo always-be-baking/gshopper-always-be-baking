@@ -13,4 +13,5 @@ export {default as Thanks} from './thanks'
 export {default as MyAccount} from './my-account'
 export {default as HomePage} from './HomePage'
 
-export {Login, Signup} from './auth-form'
+export {Signup} from './auth-form'
+export {Login} from './signin-form'
