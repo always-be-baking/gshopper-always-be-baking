@@ -147,12 +147,27 @@ export const me = () => async dispatch => {
   }
 }
 
-export const auth = (email, password, method) => async dispatch => {
+export const auth = (
+  email,
+  password,
+  method,
+  firstName,
+  lastName,
+  billingAddress,
+  shippingAddress
+) => async dispatch => {
   let user
   let order
   let localUser
   try {
-    user = await axios.post(`/auth/${method}`, {email, password})
+    user = await axios.post(`/auth/${method}`, {
+      email,
+      password,
+      firstName,
+      lastName,
+      billingAddress,
+      shippingAddress
+    })
     order = await axios.get(`/api/orders/${user.data.id}`)
     localUser = {...user.data, orderId: order.data.id}
   } catch (authError) {
