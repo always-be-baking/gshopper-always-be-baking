@@ -65,6 +65,7 @@ export const deleteProductThunk = id => async dispatch => {
 export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
   try {
     const res = await axios.put('/api/productorder/', {id, quantity})
+    console.log('userReducer: updatequantity thunk called.')
     const updatedProduct = res.data
     const action = updateQuantity(updatedProduct)
     dispatch(action)
@@ -76,9 +77,14 @@ export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
 export const fetchCart = orderId => async dispatch => {
   try {
     console.log('userReducer: fetchCart thunk called.')
-    const res = await axios.get(`/api/productorder/${orderId}`)
-    const cartItems = res.data
-    console.log('userReducer: fetchCart thunk: res.data: ', cartItems)
+    let localCart = JSON.parse(localStorage.getItem('cart')) //array of objects
+    //map over localCart, forEach:
+    //search productOrder with orderId and localCartItem.productId
+
+    const cart = await axios.get(`/api/productorder/${orderId}`)
+    const cartItems = cart.data // array of objects
+
+    console.log('userReducer: fetchCart thunk: cart.data: ', cartItems)
     const action = getCart(cartItems)
     dispatch(action)
   } catch (error) {
@@ -171,8 +177,18 @@ export const auth = (
   try {
     console.log('userReducer: auth dispatch reached, user/password found.')
     dispatch(getUser(localUser))
-
-    history.push('/')
+    if (localStorage.getItem('redirect')) {
+      console.log(
+        'userReducer: auth dispatch: redirectUrl detected on localStorage.'
+      )
+      let url = localStorage.getItem('redirect')
+      history.push(url)
+    } else {
+      console.log(
+        'userReducer: auth dispatch: user redirected to myaccount page.'
+      )
+      history.push('/myaccount')
+    }
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }

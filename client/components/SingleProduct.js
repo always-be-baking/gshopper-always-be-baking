@@ -31,10 +31,10 @@ class SingleProduct extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault()
+    let product = this.props.selectedProduct
     let productId = this.props.selectedProduct.id
     let quantity = Number(this.state.quantity)
     let orderId = this.props.user.orderId
-    let image = this.props.selectedProduct.image
     let obj = {productId, quantity, orderId}
 
     // check if user logged in; if not, save item to localStorage
@@ -52,7 +52,14 @@ class SingleProduct extends Component {
           } else return item
         })
       } else {
-        localCart.push({product: {productId, quantity, image}})
+        localCart.push({
+          productId: product.id,
+          quantity,
+          product: {
+            name: product.name,
+            image: product.image
+          }
+        })
       }
       console.log('LocalCart: ', localCart)
       localStorage.setItem('cart', JSON.stringify(localCart))
