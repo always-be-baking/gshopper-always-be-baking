@@ -78,13 +78,31 @@ export const fetchCart = orderId => async dispatch => {
   try {
     console.log('userReducer: fetchCart thunk called.')
     let localCart = JSON.parse(localStorage.getItem('cart')) //array of objects
-    //map over localCart, forEach:
-    //search productOrder with orderId and localCartItem.productId
 
-    const cart = await axios.get(`/api/productorder/${orderId}`)
-    const cartItems = cart.data // array of objects
-
-    console.log('userReducer: fetchCart thunk: cart.data: ', cartItems)
+    if (localCart.length) {
+      const cart = await axios.get(`/api/productorder/${orderId}`)
+      localCart.forEach(async item => {
+        let alreadyInCart = cart.data.filter(
+          ct => ct.productId === item.productId
+        )
+        if (alreadyInCart.length) {
+          let id = alreadyInCart[0].id
+          let quantity =
+            Number(alreadyInCart[0].quantity) + Number(item.quantity)
+          console.log('quantityCHECK!!!!!!', quantity)
+          await axios.put('/api/productorder', {id, quantity})
+        } else {
+          await axios.post('/api/productorder', {
+            orderId,
+            productId: item.productId,
+            quantity: item.quantity
+          })
+        }
+      })
+    }
+    localStorage.clear()
+    const updatedCart = await axios.get(`/api/productorder/${orderId}`)
+    const cartItems = updatedCart.data // array of objects
     const action = getCart(cartItems)
     dispatch(action)
   } catch (error) {

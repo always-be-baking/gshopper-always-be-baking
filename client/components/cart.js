@@ -24,10 +24,25 @@ class Cart extends Component {
     this.handleQuantity = this.handleQuantity.bind(this)
   }
 
-  async handleQuantity(id, event) {
+  async handleQuantity(id, prodId, event) {
+    console.log(event.target.value)
     const sendData = {quantity: event.target.value, id}
-    await this.props.updateQuantityThunk(sendData)
-    await this.props.fetchCart(this.props.user.orderId)
+    if (this.props.user.id) {
+      await this.props.updateQuantityThunk(sendData)
+      await this.props.fetchCart(this.props.user.orderId)
+    } else {
+      let localCart = JSON.parse(localStorage.getItem('cart'))
+      let updatedLocalCart = localCart.map(item => {
+        if (item.productId === prodId) {
+          item.quantity = event.target.value
+          return item
+        } else return item
+      })
+      localStorage.setItem('cart', JSON.stringify(updatedLocalCart))
+      await this.setState({
+        cart: updatedLocalCart
+      })
+    }
   }
 
   async handleDelete(id) {
@@ -36,8 +51,7 @@ class Cart extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    console.log('prevProps', prevProps)
-    if (prevProps.cart !== this.state.cart) {
+    if (this.props.user.id && prevProps.cart !== this.state.cart) {
       await this.setState({
         cart: this.props.cart
       })
@@ -59,7 +73,6 @@ class Cart extends Component {
       } else {
         console.log('Cart component: no user detected.')
         let cart = JSON.parse(localStorage.getItem('cart'))
-        console.log(cart[0])
         await this.setState({
           cart
         })
@@ -95,7 +108,9 @@ class Cart extends Component {
                       type="number"
                       min="0"
                       value={item.quantity}
-                      onChange={evt => this.handleQuantity(item.id, evt)}
+                      onChange={evt =>
+                        this.handleQuantity(item.id, item.productId, evt)
+                      }
                     />
                   </label>
                 </form>
