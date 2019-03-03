@@ -8,26 +8,30 @@ const Navbar = ({handleClick, isLoggedIn, user}) => {
   console.log('navBar component rendering.')
   return (
     <div>
-      <h1>Welcome to our bakery!</h1>
       <nav>
-        <div>
-          <Link to="/cookies">Cookies</Link>
-          <Link to="/cakes">Cakes</Link>
-          <Link to="/pastries">Pastries</Link>
+        <div className="categories">
+          <Link to="/cookies">COOKIES</Link>
+          <Link to="/cakes">CAKES</Link>
+          <Link to="/pastries">PASTRIES</Link>
+        </div>
+        <Link to="/">
+          <img id="logo" src="/images/logo.png" />
+        </Link>
+        <div className="user">
+          <Link to="/cart">CART</Link>
+          <Link to="/checkout">CHECKOUT</Link>
+
           {user.id ? (
             <a href="#" onClick={handleClick}>
-              Logout
+              LOGOUT
             </a>
           ) : (
-            <Link to="/login">Login</Link>
+            <Link to="/login">LOGIN</Link>
           )}
-          <Link to="/signup">Sign Up</Link>
-          <Link to="/myaccount">My Account</Link>
-          <Link to="/cart">Cart</Link>
-          <Link to="/checkout">Checkout</Link>
+          <Link to="/signup">SIGN UP </Link>
+          <Link to="/myaccount">MY ACCOUNT</Link>
         </div>
       </nav>
-      <hr />
     </div>
   )
 }

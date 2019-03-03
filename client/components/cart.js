@@ -48,6 +48,16 @@ class Cart extends Component {
   async handleDelete(id) {
     console.log('DELETE CLICKED', id)
     await this.props.deleteProductThunk(id)
+    await this.setState({cart: this.props.cart})
+  }
+
+  async componentDidUpdate(prevProps) {
+    console.log('prevProps', prevProps)
+    if (prevProps.cart !== this.state.cart) {
+      await this.setState({
+        cart: this.props.cart
+      })
+    }
   }
 
   async componentDidUpdate(prevProps) {
