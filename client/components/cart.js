@@ -3,7 +3,8 @@ import {connect} from 'react-redux'
 import {
   updateQuantityThunk,
   fetchCart,
-  deleteProductThunk
+  deleteProductThunk,
+  combineCarts
 } from '../store/userReducer'
 import CartItems from './cartItems'
 
@@ -64,20 +65,14 @@ class Cart extends Component {
     }
   }
 
-  async componentDidUpdate(prevProps) {
-    console.log('prevProps', prevProps)
-    if (prevProps.cart !== this.state.cart) {
-      await this.setState({
-        cart: this.props.cart
-      })
-    }
-  }
-
-  async componentDidUpdate(prevProps) {
-    if (this.props.user.id && prevProps.cart !== this.state.cart) {
-      await this.setState({
-        cart: this.props.cart
-      })
+  async componentDidUpdate(prevProps, prevState) {
+    // console.log('Cart component: componentDidUpdate: prevProps', prevProps)
+    if (this.props.user.id) {
+      if (prevState.cart !== this.props.cart) {
+        await this.setState({
+          cart: this.props.cart
+        })
+      }
     }
   }
 
@@ -85,11 +80,14 @@ class Cart extends Component {
     try {
       // user logged in
       if (this.props.user.id) {
-        console.log('Cart component: user detected.')
+        console.log('Cart component: componentDidMount: user detected.')
+        if (JSON.parse(localStorage.getItem('cart'))[0]) {
+          await this.props.combineCarts(this.props.user.orderId)
+        }
         await this.props.fetchCart(this.props.user.orderId)
       } else {
         // user not logged in
-        console.log('Cart component: no user detected.')
+        console.log('Cart component: componentDidMount: no user detected.')
         let cart = JSON.parse(localStorage.getItem('cart'))
         if (cart[0]) {
           await this.setState({
@@ -122,7 +120,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   updateQuantityThunk: idQuantity => dispatch(updateQuantityThunk(idQuantity)),
   fetchCart: userId => dispatch(fetchCart(userId)),
-  deleteProductThunk: id => dispatch(deleteProductThunk(id))
+  deleteProductThunk: id => dispatch(deleteProductThunk(id)),
+  combineCarts: orderId => dispatch(combineCarts(orderId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)

@@ -67,6 +67,7 @@ export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
     const res = await axios.put('/api/productorder/', {id, quantity})
     console.log('userReducer: updatequantity thunk called.')
     const updatedProduct = res.data
+    console.log('userReducer: updatedproduct:', updatedProduct)
     const action = updateQuantity(updatedProduct)
     dispatch(action)
   } catch (error) {
@@ -74,13 +75,12 @@ export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
   }
 }
 
-export const fetchCart = orderId => async dispatch => {
+export const combineCarts = orderId => async dispatch => {
   try {
-    console.log('userReducer: fetchCart thunk called.')
-
     // check if localStorage has anything in cart
     let localCart = JSON.parse(localStorage.getItem('cart')) //array of objects
     if (localCart !== null && localCart.length) {
+      console.log('userReducer: fetchCart thunk: localCart!==null&&hasLength')
       // if localStorage has cart items, get logged in user's open cart
       // check if any items are the same
       // if there are, add the quantities
@@ -97,7 +97,6 @@ export const fetchCart = orderId => async dispatch => {
           let id = overlapItem[0].id
           let quantity =
             Number(overlapItem[0].quantity) + Number(localItem.quantity)
-          console.log('quantityCHECK!!!!!!', quantity)
           await axios.put('/api/productorder', {id, quantity})
         } else {
           // if localCart item is not already in userCart item
@@ -112,11 +111,18 @@ export const fetchCart = orderId => async dispatch => {
       // after updating or adding to userCart, clear localStorage
       localStorage.clear()
     }
+  } catch (error) {
+    console.error(error)
+  }
+}
 
-    const sendUserCart = await axios.get(`/api/productorder/${orderId}`)
-    const cartItems = sendUserCart.data
-    const action = getCart(cartItems)
-    dispatch(action)
+export const fetchCart = orderId => async dispatch => {
+  try {
+    console.log('userReducer: fetchCart thunk called.')
+    const newCart = await axios.get(`/api/productorder/${orderId}`)
+    const newCartItems = newCart.data
+    console.log('userReducer: newCartItems:', newCartItems)
+    dispatch(getCart(newCartItems))
   } catch (error) {
     console.error(error)
   }

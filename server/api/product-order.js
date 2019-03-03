@@ -56,10 +56,24 @@ router.put('/', async (req, res, next) => {
   try {
     const quantity = req.body.quantity
     const id = req.body.id
-    const item = await ProductOrder.findById(id)
-    const updatedItem = await item.update({
-      quantity
+
+    await ProductOrder.update(
+      {
+        quantity
+      },
+      {
+        where: {
+          id
+        }
+      }
+    )
+    const updatedItem = await ProductOrder.findOne({
+      where: {
+        id
+      },
+      include: [{model: Product}]
     })
+
     res.status(200).json(updatedItem)
   } catch (error) {
     next(error)
