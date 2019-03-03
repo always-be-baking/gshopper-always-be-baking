@@ -79,7 +79,7 @@ export const fetchCart = orderId => async dispatch => {
     console.log('userReducer: fetchCart thunk called.')
     let localCart = JSON.parse(localStorage.getItem('cart')) //array of objects
 
-    if (localCart.length) {
+    if (localCart !== null && localCart.length) {
       const cart = await axios.get(`/api/productorder/${orderId}`)
       localCart.forEach(async item => {
         let alreadyInCart = cart.data.filter(

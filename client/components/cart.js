@@ -5,14 +5,7 @@ import {
   fetchCart,
   deleteProductThunk
 } from '../store/userReducer'
-
-const keygen = (function() {
-  let i = 0
-  return () => {
-    i++
-    return i
-  }
-})()
+import CartItems from './cartItems'
 
 class Cart extends Component {
   constructor(props) {
@@ -27,10 +20,13 @@ class Cart extends Component {
   async handleQuantity(id, prodId, event) {
     console.log(event.target.value)
     const sendData = {quantity: event.target.value, id}
+
+    // user logged in
     if (this.props.user.id) {
       await this.props.updateQuantityThunk(sendData)
       await this.props.fetchCart(this.props.user.orderId)
     } else {
+      // user not logged in
       let localCart = JSON.parse(localStorage.getItem('cart'))
       let updatedLocalCart = localCart.map(item => {
         if (item.productId === prodId) {
@@ -46,9 +42,26 @@ class Cart extends Component {
   }
 
   async handleDelete(id) {
-    console.log('DELETE CLICKED', id)
-    await this.props.deleteProductThunk(id)
-    await this.setState({cart: this.props.cart})
+    console.log(
+      'Cart component: delete item clicked! item.id || productId: ',
+      id
+    )
+
+    // user logged in
+    if (this.props.user.id) {
+      console.log('Cart component: delete item clicked! user found.')
+      await this.props.deleteProductThunk(id)
+      await this.setState({cart: this.props.cart})
+    } else {
+      // user not logged in
+      console.log('Cart component: delete item clicked! user not found.')
+      let localCart = JSON.parse(localStorage.getItem('cart'))
+      let updatedLocalCart = localCart.filter(item => item.productId !== id)
+      localStorage.setItem('cart', JSON.stringify(updatedLocalCart))
+      await this.setState({
+        cart: updatedLocalCart
+      })
+    }
   }
 
   async componentDidUpdate(prevProps) {
@@ -70,22 +83,19 @@ class Cart extends Component {
 
   async componentDidMount() {
     try {
-      // checking if user is logged in.
+      // user logged in
       if (this.props.user.id) {
         console.log('Cart component: user detected.')
-
         await this.props.fetchCart(this.props.user.orderId)
-        let cart = this.props.cart
-        console.log('Cart component: user detected, user cart: ', cart)
-        await this.setState({
-          cart
-        })
       } else {
+        // user not logged in
         console.log('Cart component: no user detected.')
         let cart = JSON.parse(localStorage.getItem('cart'))
-        await this.setState({
-          cart
-        })
+        if (cart[0]) {
+          await this.setState({
+            cart
+          })
+        }
         console.log('Cart component: this.state', this.state)
       }
     } catch (error) {
@@ -93,51 +103,13 @@ class Cart extends Component {
     }
   }
 
-  // login:
-  // check if localCart has items
-  // if yes, find all user's productOrders
-  // thunk update productOrder instances, but productId
-  // rethunk load all productOrder instances
-  // clear localStorage
-  // else use old code.
-
   render() {
     return (
-      <div>
-        {this.state.cart.length ? (
-          this.state.cart.map(item => {
-            return (
-              <div key={keygen()}>
-                <img src={item.product.image} style={{width: '50px'}} />
-                <br /> {item.product.name}
-                <br /> Quantity: {item.quantity}
-                <form>
-                  <label>
-                    CHANGE QUANTITY
-                    <input
-                      type="number"
-                      min="0"
-                      value={item.quantity}
-                      onChange={evt =>
-                        this.handleQuantity(item.id, item.productId, evt)
-                      }
-                    />
-                  </label>
-                </form>
-                <button
-                  type="button"
-                  onClick={() => this.handleDelete(item.id)}
-                >
-                  DELETE ITEM
-                </button>
-                <hr />
-              </div>
-            )
-          })
-        ) : (
-          <h1>No items in cart!</h1>
-        )}
-      </div>
+      <CartItems
+        {...this.state}
+        handleDelete={id => this.handleDelete(id)}
+        handleQuantity={(id, pid, evt) => this.handleQuantity(id, pid, evt)}
+      />
     )
   }
 }
