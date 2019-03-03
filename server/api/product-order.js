@@ -52,21 +52,14 @@ router.post('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   try {
     const quantity = req.body.quantity
-    // console.log(quantity, 'quantity')
+    console.log(quantity, 'quantity')
     const id = req.body.id
-    const updatedCartItem = await ProductOrder.update(
-      {
-        quantity
-      },
-      {
-        where: {
-          id
-        },
-        returning: true,
-        plain: true
-      }
-    )
-    res.status(200).json(updatedCartItem[1])
+    const item = await ProductOrder.findById(id)
+    const updatedItem = await item.update({
+      quantity
+    })
+    console.log('!!!', updatedItem)
+    res.status(200).json(updatedItem)
   } catch (error) {
     next(error)
   }

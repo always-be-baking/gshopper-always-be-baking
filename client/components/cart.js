@@ -6,6 +6,14 @@ import {
   deleteProductThunk
 } from '../store/userReducer'
 
+const keygen = (function() {
+  let i = 0
+  return () => {
+    i++
+    return i
+  }
+})()
+
 class Cart extends Component {
   constructor(props) {
     super(props)
@@ -16,14 +24,24 @@ class Cart extends Component {
     this.handleQuantity = this.handleQuantity.bind(this)
   }
 
-  handleQuantity(id, event) {
+  async handleQuantity(id, event) {
     const sendData = {quantity: event.target.value, id}
-    this.props.updateQuantityThunk(sendData)
+    await this.props.updateQuantityThunk(sendData)
+    await this.props.fetchCart(this.props.user.orderId)
   }
 
   async handleDelete(id) {
-    console.log('DELETE CLICKED')
+    console.log('DELETE CLICKED', id)
     await this.props.deleteProductThunk(id)
+  }
+
+  async componentDidUpdate(prevProps) {
+    console.log('prevProps', prevProps)
+    if (prevProps.cart !== this.state.cart) {
+      await this.setState({
+        cart: this.props.cart
+      })
+    }
   }
 
   async componentDidMount() {
@@ -66,7 +84,7 @@ class Cart extends Component {
         {this.state.cart.length ? (
           this.state.cart.map(item => {
             return (
-              <div key={item.id}>
+              <div key={keygen()}>
                 <img src={item.product.image} style={{width: '50px'}} />
                 <br /> {item.product.name}
                 <br /> Quantity: {item.quantity}
@@ -75,6 +93,8 @@ class Cart extends Component {
                     CHANGE QUANTITY
                     <input
                       type="number"
+                      min="0"
+                      value={item.quantity}
                       onChange={evt => this.handleQuantity(item.id, evt)}
                     />
                   </label>

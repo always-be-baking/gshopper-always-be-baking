@@ -28,6 +28,8 @@ class Checkout extends Component {
 
   componentWillMount() {
     if (!this.props.user.id) {
+      console.log('Checkout componentWillMount: user not logged in.')
+      localStorage.setItem('redirect', this.props.match.path)
       this.props.history.push('/login')
     }
   }
