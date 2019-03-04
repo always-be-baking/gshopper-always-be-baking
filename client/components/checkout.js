@@ -26,11 +26,26 @@ class Checkout extends Component {
     this.props.history.push('/thanks')
   }
 
-  componentWillMount() {
-    if (!this.props.user.id) {
-      console.log('Checkout componentWillMount: user not logged in.')
+  // componentWillMount() {
+  //   if (!this.props.user.id) {
+  //     console.log('Checkout componentWillMount: user not logged in.')
+  //     localStorage.setItem('redirect', this.props.match.path)
+  //     this.props.history.push('/login')
+  //   }
+  // }
+
+  async componentDidUpdate(prevProps, prevState) {
+    let localCart = JSON.parse(localStorage.getItem('cart'))
+    if (localCart[0] && !this.props.user.id) {
+      console.log('Checkout componentDidMount: user not logged in.')
       localStorage.setItem('redirect', this.props.match.path)
       this.props.history.push('/login')
+    } else if (this.props.user.id) {
+      if (prevProps !== this.props) {
+        if (!prevProps.cart[0]) {
+          await this.props.fetchCart(this.props.user.orderId)
+        }
+      }
     }
   }
 
