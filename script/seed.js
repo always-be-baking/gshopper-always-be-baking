@@ -28,7 +28,7 @@ async function seed() {
 
   const products = [
     {
-      name: 'choc chip cookie',
+      name: 'CHOC CHIP COOKIE',
       category: 'cookies',
       price: 2,
       description: 'yum',
@@ -37,7 +37,7 @@ async function seed() {
         'https://bwog.com/wp-content/uploads/2012/12/shutterstock_63002695.jpg'
     },
     {
-      name: 'peanut butter cookie',
+      name: 'PEANUT BUTTER COOKIE',
       category: 'cookies',
       price: 1.5,
       description: 'yum',
@@ -46,22 +46,60 @@ async function seed() {
         'https://bwog.com/wp-content/uploads/2012/12/shutterstock_63002695.jpg'
     },
     {
-      name: 'fancy cake',
+      name: 'MILLE FEUILLES',
       category: 'cakes',
-      price: 6,
+      price: 4,
       description: 'yum',
       inventory: 12,
-      image:
-        'https://bwog.com/wp-content/uploads/2012/12/shutterstock_63002695.jpg'
+      image: '/images/mille_feuille_patissier_bondu_paviot_1_928d.png'
     },
     {
-      name: 'croissant',
+      name: 'CROISSANT',
       category: 'pastries',
       price: 1,
       description: 'yum',
       inventory: 30,
-      image:
-        'https://bwog.com/wp-content/uploads/2012/12/shutterstock_63002695.jpg'
+      image: '/images/Croissant.png'
+    },
+    {
+      name: 'PAIN AU CHOCOLAT',
+      category: 'pastries',
+      price: 1.3,
+      description: 'yum',
+      inventory: 30,
+      image: '/images/images-q=tbn-ANd9GcS8KIZunLcv13RkP0LdpdeuB_-i-GhU0.png'
+    },
+    {
+      name: 'RAISIN BREAD',
+      category: 'pastries',
+      price: 2,
+      description: 'yum',
+      inventory: 30,
+      image: '/images/5-pain-au-raisins.png'
+    },
+    {
+      name: 'HAM AND CHEESE CROISSANT',
+      category: 'pastries',
+      price: 4,
+      description: 'yum',
+      inventory: 30,
+      image: '/images/1666795.png'
+    },
+    {
+      name: ' 10 CHOUQUETTES',
+      category: 'pastries',
+      price: 3.5,
+      description: 'yum',
+      inventory: 30,
+      image: 'images/Chouquette (2).png'
+    },
+    {
+      name: 'BRIOCHE',
+      category: 'pastries',
+      price: 2.5,
+      description: 'yum',
+      inventory: 30,
+      image: '/images/brioche suisse (1).png'
     }
   ]
 
