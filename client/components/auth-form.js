@@ -18,24 +18,25 @@ class AuthForm extends Component {
   render() {
     const {name, displayName, handleSubmit, error} = this.props
     return (
-      <div>
-        <h2>Sign up for an account with us!</h2>
+      <div className="signUp">
+        <h2>SIGN UP FOR A ACCOUNT WITH US</h2>
         <form onSubmit={handleSubmit} name={name}>
-          <div>
+          <div className="case">
             <label htmlFor="firstName">
               <small>First Name</small>
             </label>
             <input name="firstName" type="text" value={this.props.firstName} />
           </div>
+          <br />
 
-          <div>
+          <div className="case">
             <label htmlFor="lastName">
               <small>Last Name</small>
             </label>
             <input name="lastName" type="text" />
           </div>
           <br />
-          <div>
+          <div className="case">
             <label htmlFor="email">
               <small>Email</small>
             </label>
@@ -43,21 +44,21 @@ class AuthForm extends Component {
           </div>
 
           <br />
-          <div>
+          <div className="case">
             <label htmlFor="password">
               <small>Password</small>
             </label>
             <input name="password" type="password" />
           </div>
           <br />
-          <div>
+          <div className="case">
             <label htmlFor="shippingAddress">
               <small>Shipping Address</small>
             </label>
             <input name="shippingAddress" type="text" />
           </div>
           <br />
-          <div>
+          <div className="case">
             <label htmlFor="billingAddress">
               <small>Billing Address</small>
             </label>
@@ -65,7 +66,11 @@ class AuthForm extends Component {
           </div>
           <br />
           <div>
-            <button type="submit" onClick={this.submitForm}>
+            <button
+              className="clickHere"
+              type="submit"
+              onClick={this.submitForm}
+            >
               {displayName}
             </button>
           </div>

@@ -10,17 +10,17 @@ class AuthForm extends Component {
   render() {
     const {name, displayName, handleSubmit, error} = this.props
     return (
-      <div>
-        <h2>Please sign in!</h2>
+      <div className="signIn">
+        <h2>PLEASE SIGN IN</h2>
         <form onSubmit={handleSubmit} name={name}>
-          <div>
+          <div className="case">
             <label htmlFor="email">
               <small>Email</small>
             </label>
             <input name="email" type="text" />
           </div>
           <br />
-          <div>
+          <div className="case">
             <label htmlFor="password">
               <small>Password</small>
             </label>
@@ -29,7 +29,9 @@ class AuthForm extends Component {
           <br />
 
           <div>
-            <button type="submit">{displayName}</button>
+            <button className="clickHere" type="submit">
+              {displayName}
+            </button>
           </div>
           {error && error.response && <div> {error.response.data} </div>}
         </form>
