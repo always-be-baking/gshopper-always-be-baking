@@ -19,6 +19,7 @@ router.get('/:orderId', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
+    // posting from singleProductPage so no ProductOrder uid avail
     const productId = req.body.productId
     const quantity = req.body.quantity
     const orderId = req.body.orderId
@@ -29,6 +30,7 @@ router.post('/', async (req, res, next) => {
       },
       include: [{model: Product}]
     })
+    // if product already in this open order, update quantity
     if (cartCheck) {
       const updatedCart = await cartCheck.update({
         quantity: cartCheck.dataValues.quantity + quantity
@@ -36,6 +38,7 @@ router.post('/', async (req, res, next) => {
       // console.log('ADDING CART ITEM', updatedCart.dataValues)
       res.status(200).json(updatedCart)
     } else {
+      // if product not in open order, create instance
       const newCartItem = await ProductOrder.create({
         quantity,
         productId,
@@ -52,13 +55,25 @@ router.post('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   try {
     const quantity = req.body.quantity
-    console.log(quantity, 'quantity')
     const id = req.body.id
-    const item = await ProductOrder.findById(id)
-    const updatedItem = await item.update({
-      quantity
+
+    await ProductOrder.update(
+      {
+        quantity
+      },
+      {
+        where: {
+          id
+        }
+      }
+    )
+    const updatedItem = await ProductOrder.findOne({
+      where: {
+        id
+      },
+      include: [{model: Product}]
     })
-    console.log('!!!', updatedItem)
+
     res.status(200).json(updatedItem)
   } catch (error) {
     next(error)

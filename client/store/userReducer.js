@@ -67,8 +67,50 @@ export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
     const res = await axios.put('/api/productorder/', {id, quantity})
     console.log('userReducer: updatequantity thunk called.')
     const updatedProduct = res.data
+    console.log('userReducer: updatedproduct:', updatedProduct)
     const action = updateQuantity(updatedProduct)
     dispatch(action)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const combineCarts = orderId => async dispatch => {
+  try {
+    // check if localStorage has anything in cart
+    let localCart = JSON.parse(localStorage.getItem('cart')) //array of objects
+    if (localCart !== null && localCart.length) {
+      console.log('userReducer: fetchCart thunk: localCart!==null&&hasLength')
+      // if localStorage has cart items, get logged in user's open cart
+      // check if any items are the same
+      // if there are, add the quantities
+      // no same items, just add localStorage cart to user's cart
+      const userCart = await axios.get(`/api/productorder/${orderId}`)
+
+      localCart.forEach(async localItem => {
+        let overlapItem = userCart.data.filter(
+          userItem => userItem.productId === localItem.productId
+        ) // returns array of one overlapping item, if exists
+
+        // if localCart item overlaps userCart item...
+        if (overlapItem.length) {
+          let id = overlapItem[0].id
+          let quantity =
+            Number(overlapItem[0].quantity) + Number(localItem.quantity)
+          await axios.put('/api/productorder', {id, quantity})
+        } else {
+          // if localCart item is not already in userCart item
+          // put localCart item in ProductOrder join table as new row
+          await axios.post('/api/productorder', {
+            orderId,
+            productId: localItem.productId,
+            quantity: localItem.quantity
+          })
+        }
+      })
+      // after updating or adding to userCart, clear localStorage
+      localStorage.clear()
+    }
   } catch (error) {
     console.error(error)
   }
@@ -77,16 +119,10 @@ export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
 export const fetchCart = orderId => async dispatch => {
   try {
     console.log('userReducer: fetchCart thunk called.')
-    let localCart = JSON.parse(localStorage.getItem('cart')) //array of objects
-    //map over localCart, forEach:
-    //search productOrder with orderId and localCartItem.productId
-
-    const cart = await axios.get(`/api/productorder/${orderId}`)
-    const cartItems = cart.data // array of objects
-
-    console.log('userReducer: fetchCart thunk: cart.data: ', cartItems)
-    const action = getCart(cartItems)
-    dispatch(action)
+    const newCart = await axios.get(`/api/productorder/${orderId}`)
+    const newCartItems = newCart.data
+    console.log('userReducer: newCartItems:', newCartItems)
+    dispatch(getCart(newCartItems))
   } catch (error) {
     console.error(error)
   }

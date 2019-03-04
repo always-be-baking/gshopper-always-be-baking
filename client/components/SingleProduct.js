@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchOneProduct} from '../store/productsReducer'
 import {addProductToCart} from '../store/userReducer'
+import ProductPreview from './productPreview'
 
 class SingleProduct extends Component {
   constructor(props) {
@@ -37,17 +38,18 @@ class SingleProduct extends Component {
     let orderId = this.props.user.orderId
     let obj = {productId, quantity, orderId}
 
-    // check if user logged in; if not, save item to localStorage
+    // user logged in
     if (this.props.user.id) {
       console.log('ADD TO CART: req.body sent to thunk: ', obj)
       this.props.addProductToCart(obj)
     } else {
+      // user not logged in
       let localCart = JSON.parse(localStorage.getItem('cart'))
       let alreadyAdded = localCart.find(item => item.productId === productId)
       if (alreadyAdded) {
         localCart = localCart.map(item => {
           if (item.productId === productId) {
-            item.quantity += quantity
+            item.quantity = Number(item.quantity) + quantity
             return item
           } else return item
         })
@@ -71,46 +73,13 @@ class SingleProduct extends Component {
   }
 
   render() {
-    if (!this.props.selectedProduct) {
-      return <div>loading...</div>
-    }
-
     return (
-      <div>
-        <div key={this.props.selectedProduct.id}>
-          <h2>
-            <i>{this.props.selectedProduct.category}</i> >>{' '}
-            {this.props.selectedProduct.name}
-          </h2>
-
-          <img
-            src={this.props.selectedProduct.image}
-            style={{width: '200px'}}
-          />
-          <p>${this.props.selectedProduct.price}</p>
-          <p>{this.props.selectedProduct.description}</p>
-
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              Quantity
-              <input
-                style={{width: '50px'}}
-                type="number"
-                name="quantity"
-                value={this.state.quantity}
-                onChange={this.handleChange}
-                min="1"
-              />
-            </label>
-            <button type="submit" className="cart">
-              Add to Cart
-            </button>
-            {this.state.addedtoCart[1] && (
-              <h3>{this.state.addedtoCart[0]} added to cart!</h3>
-            )}
-          </form>
-        </div>
-      </div>
+      <ProductPreview
+        state={this.state}
+        selectedProduct={this.props.selectedProduct}
+        handleSubmit={evt => this.handleSubmit(evt)}
+        handleChange={evt => this.handleChange(evt)}
+      />
     )
   }
 }
