@@ -87,27 +87,29 @@ export const combineCarts = orderId => async dispatch => {
       // no same items, just add localStorage cart to user's cart
       const userCart = await axios.get(`/api/productorder/${orderId}`)
 
-      localCart.forEach(async localItem => {
-        let overlapItem = userCart.data.filter(
-          userItem => userItem.productId === localItem.productId
-        ) // returns array of one overlapping item, if exists
+      await Promise.all(
+        localCart.map(async localItem => {
+          let overlapItem = userCart.data.filter(
+            userItem => userItem.productId === localItem.productId
+          ) // returns array of one overlapping item, if exists
 
-        // if localCart item overlaps userCart item...
-        if (overlapItem.length) {
-          let id = overlapItem[0].id
-          let quantity =
-            Number(overlapItem[0].quantity) + Number(localItem.quantity)
-          await axios.put('/api/productorder', {id, quantity})
-        } else {
-          // if localCart item is not already in userCart item
-          // put localCart item in ProductOrder join table as new row
-          await axios.post('/api/productorder', {
-            orderId,
-            productId: localItem.productId,
-            quantity: localItem.quantity
-          })
-        }
-      })
+          // if localCart item overlaps userCart item...
+          if (overlapItem.length) {
+            let id = overlapItem[0].id
+            let quantity =
+              Number(overlapItem[0].quantity) + Number(localItem.quantity)
+            await axios.put('/api/productorder', {id, quantity})
+          } else {
+            // if localCart item is not already in userCart item
+            // put localCart item in ProductOrder join table as new row
+            await axios.post('/api/productorder', {
+              orderId,
+              productId: localItem.productId,
+              quantity: localItem.quantity
+            })
+          }
+        })
+      )
       // after updating or adding to userCart, clear localStorage
       localStorage.clear()
     }
@@ -163,7 +165,6 @@ export const fetchOrderHistory = userId => async dispatch => {
     console.log('FETCH HISTORY', userId)
     const res = await axios.get(`/api/orders/${userId}/history`)
     const orderHistory = res.data
-
     const action = getOrderHistory(orderHistory)
     dispatch(action)
   } catch (error) {
@@ -246,7 +247,6 @@ export const logout = () => async dispatch => {
 export default function(state = initialState, action) {
   switch (action.type) {
     case DELETE_PRODUCT:
-      console.log('DELETE REDUCER REACHED')
       return {
         ...state,
         cart: state.cart.filter(item => item.id !== action.id)
@@ -284,7 +284,6 @@ export default function(state = initialState, action) {
       return {...state, ...initialState}
     case UPDATE_USER:
       return {...state, user: action.user}
-
     case GET_ORDER_HISTORY:
       return {...state, orders: action.orders}
     default:
