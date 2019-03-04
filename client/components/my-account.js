@@ -3,13 +3,12 @@ import {connect} from 'react-redux'
 import {fetchOrderHistory} from '../store/userReducer'
 
 class MyAccount extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
   }
 
   async componentDidMount() {
     try {
-      console.log('PROPS USER ID', this.props.user.id)
       await this.props.fetchOrderHistory(this.props.user.id)
     } catch (error) {
       console.log('fetch did not work', error)
@@ -17,18 +16,45 @@ class MyAccount extends Component {
   }
 
   render() {
-    console.log('this.props.orders', this.props.orders)
+    // if (!this.props.user.length) {
+    //   return <div>loading...</div>
+    // }
+    console.log(
+      'this.props.user',
+      this.props.user,
+      'this.props.orders',
+      this.props.orders
+    )
     return (
       <div>
-        My Order History
-        {this.props.orders.map(order => (
-          <div>
-            <p>Order ID: {order.id} </p>
-            <p> Name: {order.products[0].name} </p>
-            <p> Quantity: {order.products[0].product_order.quantity} </p>
-            <img src={order.products[0].image} />
-          </div>
-        ))}
+        My Information
+        <br />
+        Name:
+        {this.props.user.firstName} {this.props.user.lastName}
+        <br />
+        Email:
+        {this.props.user.email}
+        <br />
+        Billing Address:
+        {this.props.user.billingAddress}
+        <br />
+        Shipping Address:
+        {this.props.user.shippingAddress}
+        <div>
+          My Order History
+          {this.props.orders.map(order => (
+            <div key={order.id}>
+              <p>Order ID: {order.id} </p>
+              {order.products.map(product => (
+                <div key={product.id}>
+                  <p> Name: {product.name} </p>
+                  <p> Quantity: {product.product_order.quantity} </p>
+                  <img src={product.image} />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     )
   }
