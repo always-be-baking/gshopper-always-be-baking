@@ -111,6 +111,10 @@ async function seed() {
     {
       userId: 2,
       bought: false
+    },
+    {
+      userId: 1,
+      bought: true
     }
   ]
 
@@ -138,6 +142,18 @@ async function seed() {
       quantity: 33,
       productId: 2,
       orderId: 1
+    },
+    {
+      userId: 1,
+      quantity: 44,
+      productId: 3,
+      orderId: 3
+    },
+    {
+      userId: 1,
+      quantity: 45,
+      productId: 2,
+      orderId: 3
     }
   ]
 

@@ -748,6 +748,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+<<<<<<< HEAD
+=======
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+>>>>>>> master
 var Cart =
 /*#__PURE__*/
 function (_Component) {
@@ -824,7 +829,11 @@ function (_Component) {
         }, _callee, this);
       }));
 
+<<<<<<< HEAD
       function handleQuantity(_x, _x2, _x3) {
+=======
+      return function handleQuantity(_x, _x2, _x3) {
+>>>>>>> master
         return _handleQuantity.apply(this, arguments);
       }
 
@@ -883,7 +892,11 @@ function (_Component) {
         }, _callee2, this);
       }));
 
+<<<<<<< HEAD
       function handleDelete(_x4) {
+=======
+      return function handleDelete(_x4) {
+>>>>>>> master
         return _handleDelete.apply(this, arguments);
       }
 
@@ -904,7 +917,11 @@ function (_Component) {
                   break;
                 }
 
+<<<<<<< HEAD
                 if (!(prevState.cart !== this.props.cart)) {
+=======
+                if (!(prevProps !== this.props)) {
+>>>>>>> master
                   _context3.next = 4;
                   break;
                 }
@@ -922,7 +939,11 @@ function (_Component) {
         }, _callee3, this);
       }));
 
+<<<<<<< HEAD
       function componentDidUpdate(_x5, _x6) {
+=======
+      return function componentDidUpdate(_x5, _x6) {
+>>>>>>> master
         return _componentDidUpdate.apply(this, arguments);
       }
 
@@ -965,7 +986,10 @@ function (_Component) {
                 break;
 
               case 10:
+<<<<<<< HEAD
                 // user not logged in
+=======
+>>>>>>> master
                 console.log('Cart component: componentDidMount: no user detected.');
                 cart = JSON.parse(localStorage.getItem('cart'));
 
@@ -1001,9 +1025,13 @@ function (_Component) {
 
       function componentDidMount() {
         return _componentDidMount.apply(this, arguments);
+<<<<<<< HEAD
       }
 
       return componentDidMount;
+=======
+      };
+>>>>>>> master
     }()
   }, {
     key: "render",
@@ -2732,7 +2760,11 @@ var updateQuantityThunk = function updateQuantityThunk(_ref3) {
                 return _context3.stop();
             }
           }
+<<<<<<< HEAD
         }, _callee3, null, [[0, 11]]);
+=======
+        }, _callee3, this, [[0, 11]]);
+>>>>>>> master
       }));
 
       return function (_x3) {
@@ -2761,7 +2793,11 @@ var combineCarts = function combineCarts(orderId) {
                 localCart = JSON.parse(localStorage.getItem('cart')); //array of objects
 
                 if (!(localCart !== null && localCart.length)) {
+<<<<<<< HEAD
                   _context5.next = 9;
+=======
+                  _context5.next = 10;
+>>>>>>> master
                   break;
                 }
 
@@ -2775,7 +2811,12 @@ var combineCarts = function combineCarts(orderId) {
 
               case 6:
                 userCart = _context5.sent;
+<<<<<<< HEAD
                 localCart.forEach(
+=======
+                _context5.next = 9;
+                return Promise.all(localCart.map(
+>>>>>>> master
                 /*#__PURE__*/
                 function () {
                   var _ref6 = _asyncToGenerator(
@@ -2821,12 +2862,17 @@ var combineCarts = function combineCarts(orderId) {
                             return _context4.stop();
                         }
                       }
+<<<<<<< HEAD
                     }, _callee4);
+=======
+                    }, _callee4, this);
+>>>>>>> master
                   }));
 
                   return function (_x5) {
                     return _ref6.apply(this, arguments);
                   };
+<<<<<<< HEAD
                 }()); // after updating or adding to userCart, clear localStorage
 
                 localStorage.clear();
@@ -2837,6 +2883,20 @@ var combineCarts = function combineCarts(orderId) {
 
               case 11:
                 _context5.prev = 11;
+=======
+                }()));
+
+              case 9:
+                // after updating or adding to userCart, clear localStorage
+                localStorage.clear();
+
+              case 10:
+                _context5.next = 15;
+                break;
+
+              case 12:
+                _context5.prev = 12;
+>>>>>>> master
                 _context5.t0 = _context5["catch"](0);
                 console.error(_context5.t0);
 
@@ -2845,7 +2905,11 @@ var combineCarts = function combineCarts(orderId) {
                 return _context5.stop();
             }
           }
+<<<<<<< HEAD
         }, _callee5, null, [[0, 11]]);
+=======
+        }, _callee5, this, [[0, 12]]);
+>>>>>>> master
       }));
 
       return function (_x4) {
@@ -2892,7 +2956,11 @@ var fetchCart = function fetchCart(orderId) {
                 return _context6.stop();
             }
           }
+<<<<<<< HEAD
         }, _callee6, null, [[0, 10]]);
+=======
+        }, _callee6, this, [[0, 10]]);
+>>>>>>> master
       }));
 
       return function (_x6) {
@@ -2946,7 +3014,11 @@ var addProductToCart = function addProductToCart(_ref8) {
                 return _context7.stop();
             }
           }
+<<<<<<< HEAD
         }, _callee7, null, [[0, 9]]);
+=======
+        }, _callee7, this, [[0, 9]]);
+>>>>>>> master
       }));
 
       return function (_x7) {
@@ -2996,7 +3068,11 @@ var checkoutThunk = function checkoutThunk(userId) {
                 return _context8.stop();
             }
           }
+<<<<<<< HEAD
         }, _callee8, null, [[0, 9]]);
+=======
+        }, _callee8, this, [[0, 9]]);
+>>>>>>> master
       }));
 
       return function (_x8) {
@@ -3043,7 +3119,11 @@ var fetchOrderHistory = function fetchOrderHistory(userId) {
                 return _context9.stop();
             }
           }
+<<<<<<< HEAD
         }, _callee9, null, [[0, 10]]);
+=======
+        }, _callee9, this, [[0, 10]]);
+>>>>>>> master
       }));
 
       return function (_x9) {
@@ -3096,7 +3176,11 @@ var me = function me() {
                 return _context10.stop();
             }
           }
+<<<<<<< HEAD
         }, _callee10, null, [[0, 12]]);
+=======
+        }, _callee10, this, [[0, 12]]);
+>>>>>>> master
       }));
 
       return function (_x10) {
@@ -3175,7 +3259,11 @@ var auth = function auth(email, password, method, firstName, lastName, billingAd
                 return _context11.stop();
             }
           }
+<<<<<<< HEAD
         }, _callee11, null, [[0, 10]]);
+=======
+        }, _callee11, this, [[0, 10]]);
+>>>>>>> master
       }));
 
       return function (_x11) {
@@ -3220,7 +3308,11 @@ var logout = function logout() {
                 return _context12.stop();
             }
           }
+<<<<<<< HEAD
         }, _callee12, null, [[0, 7]]);
+=======
+        }, _callee12, this, [[0, 7]]);
+>>>>>>> master
       }));
 
       return function (_x12) {
@@ -3242,7 +3334,6 @@ function _default() {
 
   switch (action.type) {
     case DELETE_PRODUCT:
-      console.log('DELETE REDUCER REACHED');
       return _objectSpread({}, state, {
         cart: state.cart.filter(function (item) {
           return item.id !== action.id;
