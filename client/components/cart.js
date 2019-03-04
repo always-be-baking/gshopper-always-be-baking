@@ -69,6 +69,9 @@ class Cart extends Component {
     // console.log('Cart component: componentDidUpdate: prevProps', prevProps)
     if (this.props.user.id) {
       if (prevProps !== this.props) {
+        if (!prevProps.cart[0]) {
+          await this.props.fetchCart(this.props.user.orderId)
+        }
         await this.setState({
           cart: this.props.cart
         })
