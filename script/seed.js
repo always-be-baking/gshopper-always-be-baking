@@ -14,7 +14,8 @@ async function seed() {
       email: 'cody@email.com',
       password: '123',
       shippingAddress: '5 hannover sq New York City, NY 10000',
-      billingAddress: '5 hannover sq New York City, NY 10000'
+      billingAddress: '5 hannover sq New York City, NY 10000',
+      isAdmin: true
     },
     {
       firstName: 'emmy',
@@ -22,7 +23,8 @@ async function seed() {
       email: 'murphy@email.com',
       password: '123',
       shippingAddress: '5 hannover sq New York City, NY 10000',
-      billingAddress: '5 hannover sq New York City, NY 10000'
+      billingAddress: '5 hannover sq New York City, NY 10000',
+      isAdmin: false
     }
   ]
 
