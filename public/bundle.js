@@ -140,7 +140,9 @@ var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_module
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var HomePage = function HomePage() {
-  return _react.default.createElement("div", {
+  return _react.default.createElement("div", null, _react.default.createElement("div", null, _react.default.createElement("h1", {
+    className: "header"
+  }, "OUR PRODUCTS")), _react.default.createElement("div", {
     className: "homeCategories"
   }, _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
     to: "/cakes"
@@ -149,12 +151,12 @@ var HomePage = function HomePage() {
   }), _react.default.createElement("p", null, "Cakes"))), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
     to: "/pastries"
   }, _react.default.createElement("img", {
-    src: "/images/mille_feuille_patissier_bondu_paviot_1_928d.png"
+    src: "/images/brioche suisse (1).png"
   }), _react.default.createElement("p", null, "Pastries"))), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
     to: "cookies"
   }, _react.default.createElement("img", {
     src: "/images/cookies.png"
-  }), _react.default.createElement("p", null, "Cookies"))));
+  }), _react.default.createElement("p", null, "Cookies")))));
 };
 
 var _default = HomePage;
@@ -239,18 +241,26 @@ function (_Component) {
         }));
       }
 
-      return _react.default.createElement("div", null, _react.default.createElement("h2", null, "Showing all ", this.props.category, "!"), this.props.products.map(function (product) {
+      return _react.default.createElement("div", null, _react.default.createElement("h2", {
+        id: "categoryTitle"
+      }, "Our ", this.props.category), _react.default.createElement("div", {
+        className: "parentCategory"
+      }, this.props.products.map(function (product) {
         return _react.default.createElement("div", {
+          className: "one_category",
           key: product.id
-        }, _react.default.createElement(_reactRouterDom.Link, {
-          to: "/".concat(_this.props.category, "/").concat(product.id)
-        }, _react.default.createElement("p", null, product.name), _react.default.createElement("img", {
-          src: product.image,
-          style: {
-            width: '150px'
-          }
-        })), _react.default.createElement("p", null, product.price));
-      }));
+        }, _react.default.createElement("img", {
+          className: "imageProduct",
+          src: product.image
+        }), _react.default.createElement("p", {
+          className: "nameProduct"
+        }, product.name), _react.default.createElement("p", {
+          className: "priceProduct"
+        }, product.price, " $"), _react.default.createElement(_reactRouterDom.Link, {
+          to: "/".concat(_this.props.category, "/").concat(product.id),
+          className: "buttonProduct"
+        }, "Ordering"));
+      })));
     }
   }]);
 
@@ -301,6 +311,10 @@ var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-r
 var _productsReducer = __webpack_require__(/*! ../store/productsReducer */ "./client/store/productsReducer.js");
 
 var _userReducer = __webpack_require__(/*! ../store/userReducer */ "./client/store/userReducer.js");
+
+var _productPreview = _interopRequireDefault(__webpack_require__(/*! ./productPreview */ "./client/components/productPreview.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -400,7 +414,7 @@ function (_Component) {
       var obj = {
         productId: productId,
         quantity: quantity,
-        orderId: orderId // check if user logged in; if not, save item to localStorage
+        orderId: orderId // user logged in
 
       };
 
@@ -408,6 +422,7 @@ function (_Component) {
         console.log('ADD TO CART: req.body sent to thunk: ', obj);
         this.props.addProductToCart(obj);
       } else {
+        // user not logged in
         var localCart = JSON.parse(localStorage.getItem('cart'));
         var alreadyAdded = localCart.find(function (item) {
           return item.productId === productId;
@@ -416,7 +431,7 @@ function (_Component) {
         if (alreadyAdded) {
           localCart = localCart.map(function (item) {
             if (item.productId === productId) {
-              item.quantity += quantity;
+              item.quantity = Number(item.quantity) + quantity;
               return item;
             } else return item;
           });
@@ -442,32 +457,18 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      if (!this.props.selectedProduct) {
-        return _react.default.createElement("div", null, "loading...");
-      }
+      var _this2 = this;
 
-      return _react.default.createElement("div", null, _react.default.createElement("div", {
-        key: this.props.selectedProduct.id
-      }, _react.default.createElement("h2", null, _react.default.createElement("i", null, this.props.selectedProduct.category), " >>", ' ', this.props.selectedProduct.name), _react.default.createElement("img", {
-        src: this.props.selectedProduct.image,
-        style: {
-          width: '200px'
-        }
-      }), _react.default.createElement("p", null, "$", this.props.selectedProduct.price), _react.default.createElement("p", null, this.props.selectedProduct.description), _react.default.createElement("form", {
-        onSubmit: this.handleSubmit
-      }, _react.default.createElement("label", null, "Quantity", _react.default.createElement("input", {
-        style: {
-          width: '50px'
+      return _react.default.createElement(_productPreview.default, {
+        state: this.state,
+        selectedProduct: this.props.selectedProduct,
+        handleSubmit: function handleSubmit(evt) {
+          return _this2.handleSubmit(evt);
         },
-        type: "number",
-        name: "quantity",
-        value: this.state.quantity,
-        onChange: this.handleChange,
-        min: "1"
-      })), _react.default.createElement("button", {
-        type: "submit",
-        className: "cart"
-      }, "Add to Cart"), this.state.addedtoCart[1] && _react.default.createElement("h3", null, this.state.addedtoCart[0], " added to cart!"))));
+        handleChange: function handleChange(evt) {
+          return _this2.handleChange(evt);
+        }
+      });
     }
   }]);
 
@@ -700,9 +701,15 @@ var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-r
 
 var _userReducer = __webpack_require__(/*! ../store/userReducer */ "./client/store/userReducer.js");
 
+var _cartItems = _interopRequireDefault(__webpack_require__(/*! ./cartItems */ "./client/components/cartItems.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -723,14 +730,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-var keygen = function () {
-  var i = 0;
-  return function () {
-    i++;
-    return i;
-  };
-}();
 
 var Cart =
 /*#__PURE__*/
@@ -756,24 +755,51 @@ function (_Component) {
     value: function () {
       var _handleQuantity = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee(id, event) {
-        var sendData;
+      regeneratorRuntime.mark(function _callee(id, prodId, event) {
+        var sendData, localCart, updatedLocalCart;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                console.log(event.target.value);
                 sendData = {
                   quantity: event.target.value,
-                  id: id
+                  id: id // user logged in
+
                 };
-                _context.next = 3;
+
+                if (!this.props.user.id) {
+                  _context.next = 9;
+                  break;
+                }
+
+                _context.next = 5;
                 return this.props.updateQuantityThunk(sendData);
 
-              case 3:
-                _context.next = 5;
+              case 5:
+                _context.next = 7;
                 return this.props.fetchCart(this.props.user.orderId);
 
-              case 5:
+              case 7:
+                _context.next = 14;
+                break;
+
+              case 9:
+                // user not logged in
+                localCart = JSON.parse(localStorage.getItem('cart'));
+                updatedLocalCart = localCart.map(function (item) {
+                  if (item.productId === prodId) {
+                    item.quantity = event.target.value;
+                    return item;
+                  } else return item;
+                });
+                localStorage.setItem('cart', JSON.stringify(updatedLocalCart));
+                _context.next = 14;
+                return this.setState({
+                  cart: updatedLocalCart
+                });
+
+              case 14:
               case "end":
                 return _context.stop();
             }
@@ -781,7 +807,7 @@ function (_Component) {
         }, _callee, this);
       }));
 
-      return function handleQuantity(_x, _x2) {
+      return function handleQuantity(_x, _x2, _x3) {
         return _handleQuantity.apply(this, arguments);
       };
     }()
@@ -791,21 +817,46 @@ function (_Component) {
       var _handleDelete = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(id) {
+        var localCart, updatedLocalCart;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                console.log('DELETE CLICKED', id);
-                _context2.next = 3;
+                console.log('Cart component: delete item clicked! item.id || productId: ', id); // user logged in
+
+                if (!this.props.user.id) {
+                  _context2.next = 9;
+                  break;
+                }
+
+                console.log('Cart component: delete item clicked! user found.');
+                _context2.next = 5;
                 return this.props.deleteProductThunk(id);
 
-              case 3:
-                _context2.next = 5;
+              case 5:
+                _context2.next = 7;
                 return this.setState({
                   cart: this.props.cart
                 });
 
-              case 5:
+              case 7:
+                _context2.next = 15;
+                break;
+
+              case 9:
+                // user not logged in
+                console.log('Cart component: delete item clicked! user not found.');
+                localCart = JSON.parse(localStorage.getItem('cart'));
+                updatedLocalCart = localCart.filter(function (item) {
+                  return item.productId !== id;
+                });
+                localStorage.setItem('cart', JSON.stringify(updatedLocalCart));
+                _context2.next = 15;
+                return this.setState({
+                  cart: updatedLocalCart
+                });
+
+              case 15:
               case "end":
                 return _context2.stop();
             }
@@ -813,7 +864,7 @@ function (_Component) {
         }, _callee2, this);
       }));
 
-      return function handleDelete(_x3) {
+      return function handleDelete(_x4) {
         return _handleDelete.apply(this, arguments);
       };
     }()
@@ -822,14 +873,17 @@ function (_Component) {
     value: function () {
       var _componentDidUpdate = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee3(prevProps) {
+      regeneratorRuntime.mark(function _callee3(prevProps, prevState) {
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                console.log('prevProps', prevProps);
+                if (!this.props.user.id) {
+                  _context3.next = 4;
+                  break;
+                }
 
-                if (!(prevProps.cart !== this.state.cart)) {
+                if (!(prevState.cart !== this.props.cart)) {
                   _context3.next = 4;
                   break;
                 }
@@ -847,7 +901,7 @@ function (_Component) {
         }, _callee3, this);
       }));
 
-      return function componentDidUpdate(_x4) {
+      return function componentDidUpdate(_x5, _x6) {
         return _componentDidUpdate.apply(this, arguments);
       };
     }()
@@ -857,8 +911,7 @@ function (_Component) {
       var _componentDidMount = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee4() {
-        var cart, _cart;
-
+        var cart;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
@@ -866,93 +919,80 @@ function (_Component) {
                 _context4.prev = 0;
 
                 if (!this.props.user.id) {
-                  _context4.next = 11;
+                  _context4.next = 10;
                   break;
                 }
 
-                console.log('Cart component: user detected.');
-                _context4.next = 5;
+                console.log('Cart component: componentDidMount: user detected.');
+
+                if (!JSON.parse(localStorage.getItem('cart'))[0]) {
+                  _context4.next = 6;
+                  break;
+                }
+
+                _context4.next = 6;
+                return this.props.combineCarts(this.props.user.orderId);
+
+              case 6:
+                _context4.next = 8;
                 return this.props.fetchCart(this.props.user.orderId);
 
-              case 5:
-                cart = this.props.cart;
-                console.log('Cart component: user detected, user cart: ', cart);
-                _context4.next = 9;
+              case 8:
+                _context4.next = 16;
+                break;
+
+              case 10:
+                // user not logged in
+                console.log('Cart component: componentDidMount: no user detected.');
+                cart = JSON.parse(localStorage.getItem('cart'));
+
+                if (!cart[0]) {
+                  _context4.next = 15;
+                  break;
+                }
+
+                _context4.next = 15;
                 return this.setState({
                   cart: cart
                 });
 
-              case 9:
-                _context4.next = 17;
-                break;
-
-              case 11:
-                console.log('Cart component: no user detected.');
-                _cart = JSON.parse(localStorage.getItem('cart'));
-                console.log(_cart[0]);
-                _context4.next = 16;
-                return this.setState({
-                  cart: _cart
-                });
-
-              case 16:
+              case 15:
                 console.log('Cart component: this.state', this.state);
 
-              case 17:
-                _context4.next = 22;
+              case 16:
+                _context4.next = 21;
                 break;
 
-              case 19:
-                _context4.prev = 19;
+              case 18:
+                _context4.prev = 18;
                 _context4.t0 = _context4["catch"](0);
                 console.error('fetch did not work:::', _context4.t0);
 
-              case 22:
+              case 21:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, this, [[0, 19]]);
+        }, _callee4, this, [[0, 18]]);
       }));
 
       return function componentDidMount() {
         return _componentDidMount.apply(this, arguments);
       };
-    }() // login:
-    // check if localCart has items
-    // if yes, find all user's productOrders
-    // thunk update productOrder instances, but productId
-    // rethunk load all productOrder instances
-    // clear localStorage
-    // else use old code.
-
+    }()
   }, {
     key: "render",
     value: function render() {
       var _this2 = this;
 
-      return _react.default.createElement("div", null, this.state.cart.length ? this.state.cart.map(function (item) {
-        return _react.default.createElement("div", {
-          key: keygen()
-        }, _react.default.createElement("img", {
-          src: item.product.image,
-          style: {
-            width: '50px'
-          }
-        }), _react.default.createElement("br", null), " ", item.product.name, _react.default.createElement("br", null), " Quantity: ", item.quantity, _react.default.createElement("form", null, _react.default.createElement("label", null, "CHANGE QUANTITY", _react.default.createElement("input", {
-          type: "number",
-          min: "0",
-          value: item.quantity,
-          onChange: function onChange(evt) {
-            return _this2.handleQuantity(item.id, evt);
-          }
-        }))), _react.default.createElement("button", {
-          type: "button",
-          onClick: function onClick() {
-            return _this2.handleDelete(item.id);
-          }
-        }, "DELETE ITEM"), _react.default.createElement("hr", null));
-      }) : _react.default.createElement("h1", null, "No items in cart!"));
+      return _react.default.createElement(_cartItems.default, _extends({}, this.state, {
+        handleDelete: function handleDelete(id) {
+          return _this2.handleDelete(id);
+        },
+        handleQuantity: function handleQuantity(id, pid, evt) {
+          return _this2.handleQuantity(id, pid, evt);
+        }
+      }));
     }
   }]);
 
@@ -976,12 +1016,75 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     deleteProductThunk: function deleteProductThunk(id) {
       return dispatch((0, _userReducer.deleteProductThunk)(id));
+    },
+    combineCarts: function combineCarts(orderId) {
+      return dispatch((0, _userReducer.combineCarts)(orderId));
     }
   };
 };
 
 var _default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Cart);
 
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./client/components/cartItems.js":
+/*!****************************************!*\
+  !*** ./client/components/cartItems.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var keygen = function () {
+  var i = 0;
+  return function () {
+    i++;
+    return i;
+  };
+}();
+
+var CartItems = function CartItems(props) {
+  return _react.default.createElement("div", null, props.cart.length ? props.cart.map(function (item) {
+    // console.log('productOrder item: ', item)
+    return _react.default.createElement("div", {
+      key: keygen()
+    }, _react.default.createElement("img", {
+      src: item.product.image,
+      style: {
+        width: '50px'
+      }
+    }), _react.default.createElement("br", null), " ", item.product.name, _react.default.createElement("br", null), " Quantity: ", item.quantity, _react.default.createElement("form", null, _react.default.createElement("label", null, "CHANGE QUANTITY", _react.default.createElement("input", {
+      type: "number",
+      min: "0",
+      value: item.quantity,
+      onChange: function onChange(evt) {
+        return props.handleQuantity(item.id, item.productId, evt);
+      }
+    }))), _react.default.createElement("button", {
+      type: "button",
+      onClick: item.id ? function () {
+        return props.handleDelete(item.id);
+      } : function () {
+        return props.handleDelete(item.productId);
+      }
+    }, "DELETE ITEM"), _react.default.createElement("hr", null));
+  }) : _react.default.createElement("h1", null, "No items in cart!"));
+};
+
+var _default = CartItems;
 exports.default = _default;
 
 /***/ }),
@@ -1356,10 +1459,10 @@ var MyAccount =
 function (_Component) {
   _inherits(MyAccount, _Component);
 
-  function MyAccount() {
+  function MyAccount(props) {
     _classCallCheck(this, MyAccount);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(MyAccount).call(this));
+    return _possibleConstructorReturn(this, _getPrototypeOf(MyAccount).call(this, props));
   }
 
   _createClass(MyAccount, [{
@@ -1373,25 +1476,24 @@ function (_Component) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                console.log('PROPS USER ID', this.props.user.id);
-                _context.next = 4;
+                _context.next = 3;
                 return this.props.fetchOrderHistory(this.props.user.id);
 
-              case 4:
-                _context.next = 9;
+              case 3:
+                _context.next = 8;
                 break;
 
-              case 6:
-                _context.prev = 6;
+              case 5:
+                _context.prev = 5;
                 _context.t0 = _context["catch"](0);
                 console.log('fetch did not work', _context.t0);
 
-              case 9:
+              case 8:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 6]]);
+        }, _callee, this, [[0, 5]]);
       }));
 
       return function componentDidMount() {
@@ -1401,12 +1503,21 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log('this.props.orders', this.props.orders);
-      return _react.default.createElement("div", null, "My Order History", this.props.orders.map(function (order) {
-        return _react.default.createElement("div", null, _react.default.createElement("p", null, "Order ID: ", order.id, " "), _react.default.createElement("p", null, " Name: ", order.products[0].name, " "), _react.default.createElement("p", null, " Quantity: ", order.products[0].product_order.quantity, " "), _react.default.createElement("img", {
-          src: order.products[0].image
+      // if (!this.props.user.length) {
+      //   return <div>loading...</div>
+      // }
+      console.log('this.props.user', this.props.user, 'this.props.orders', this.props.orders);
+      return _react.default.createElement("div", null, "My Information", _react.default.createElement("br", null), "Name:", this.props.user.firstName, " ", this.props.user.lastName, _react.default.createElement("br", null), "Email:", this.props.user.email, _react.default.createElement("br", null), "Billing Address:", this.props.user.billingAddress, _react.default.createElement("br", null), "Shipping Address:", this.props.user.shippingAddress, _react.default.createElement("div", null, "My Order History", this.props.orders.map(function (order) {
+        return _react.default.createElement("div", {
+          key: order.id
+        }, _react.default.createElement("p", null, "Order ID: ", order.id, " "), order.products.map(function (product) {
+          return _react.default.createElement("div", {
+            key: product.id
+          }, _react.default.createElement("p", null, " Name: ", product.name, " "), _react.default.createElement("p", null, " Quantity: ", product.product_order.quantity, " "), _react.default.createElement("img", {
+            src: product.image
+          }));
         }));
-      }));
+      })));
     }
   }]);
 
@@ -1520,6 +1631,59 @@ Navbar.propTypes = {
   handleClick: _propTypes.default.func.isRequired,
   isLoggedIn: _propTypes.default.bool.isRequired
 };
+
+/***/ }),
+
+/***/ "./client/components/productPreview.js":
+/*!*********************************************!*\
+  !*** ./client/components/productPreview.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ProductPreview = function ProductPreview(props) {
+  if (!props.selectedProduct) {
+    return _react.default.createElement("div", null, "loading...");
+  }
+
+  return _react.default.createElement("div", null, _react.default.createElement("div", {
+    key: props.selectedProduct.id
+  }, _react.default.createElement("h2", null, _react.default.createElement("i", null, props.selectedProduct.category), " >>", ' ', props.selectedProduct.name), _react.default.createElement("img", {
+    src: props.selectedProduct.image,
+    style: {
+      width: '200px'
+    }
+  }), _react.default.createElement("p", null, "$", props.selectedProduct.price), _react.default.createElement("p", null, props.selectedProduct.description), _react.default.createElement("form", {
+    onSubmit: props.handleSubmit
+  }, _react.default.createElement("label", null, "Quantity", _react.default.createElement("input", {
+    style: {
+      width: '50px'
+    },
+    type: "number",
+    name: "quantity",
+    value: props.state.quantity,
+    onChange: props.handleChange,
+    min: "1"
+  })), _react.default.createElement("button", {
+    type: "submit",
+    className: "cart"
+  }, "Add to Cart"), props.state.addedtoCart[1] && _react.default.createElement("h3", null, props.state.addedtoCart[0], " added to cart!"))));
+};
+
+var _default = ProductPreview;
+exports.default = _default;
 
 /***/ }),
 
@@ -1892,7 +2056,13 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log('Routes component rendering.');
+      console.log('Routes component: rendering.');
+
+      if (!JSON.parse(localStorage.getItem('cart'))) {
+        console.log('Routes component: creating localStorage cart.');
+        localStorage.setItem('cart', JSON.stringify([]));
+      }
+
       var isLoggedIn = this.props.isLoggedIn;
       return _react.default.createElement(_reactRouterDom.Switch, null, _react.default.createElement(_reactRouterDom.Route, {
         exact: true,
@@ -2296,7 +2466,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = _default;
-exports.logout = exports.auth = exports.me = exports.fetchOrderHistory = exports.checkoutThunk = exports.addProductToCart = exports.fetchCart = exports.updateQuantityThunk = exports.deleteProductThunk = exports.updateUserThunk = void 0;
+exports.logout = exports.auth = exports.me = exports.fetchOrderHistory = exports.checkoutThunk = exports.addProductToCart = exports.fetchCart = exports.combineCarts = exports.updateQuantityThunk = exports.deleteProductThunk = exports.updateUserThunk = void 0;
 
 var _axios = _interopRequireDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 
@@ -2516,22 +2686,23 @@ var updateQuantityThunk = function updateQuantityThunk(_ref3) {
                 res = _context3.sent;
                 console.log('userReducer: updatequantity thunk called.');
                 updatedProduct = res.data;
+                console.log('userReducer: updatedproduct:', updatedProduct);
                 action = updateQuantity(updatedProduct);
                 dispatch(action);
-                _context3.next = 13;
+                _context3.next = 14;
                 break;
 
-              case 10:
-                _context3.prev = 10;
+              case 11:
+                _context3.prev = 11;
                 _context3.t0 = _context3["catch"](0);
                 console.error(_context3.t0);
 
-              case 13:
+              case 14:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[0, 10]]);
+        }, _callee3, this, [[0, 11]]);
       }));
 
       return function (_x3) {
@@ -2543,48 +2714,108 @@ var updateQuantityThunk = function updateQuantityThunk(_ref3) {
 
 exports.updateQuantityThunk = updateQuantityThunk;
 
-var fetchCart = function fetchCart(orderId) {
+var combineCarts = function combineCarts(orderId) {
   return (
     /*#__PURE__*/
     function () {
       var _ref5 = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee4(dispatch) {
-        var localCart, cart, cartItems, action;
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      regeneratorRuntime.mark(function _callee5(dispatch) {
+        var localCart, userCart;
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
-                _context4.prev = 0;
-                console.log('userReducer: fetchCart thunk called.');
+                _context5.prev = 0;
+                // check if localStorage has anything in cart
                 localCart = JSON.parse(localStorage.getItem('cart')); //array of objects
-                //map over localCart, forEach:
-                //search productOrder with orderId and localCartItem.productId
 
-                _context4.next = 5;
+                if (!(localCart !== null && localCart.length)) {
+                  _context5.next = 9;
+                  break;
+                }
+
+                console.log('userReducer: fetchCart thunk: localCart!==null&&hasLength'); // if localStorage has cart items, get logged in user's open cart
+                // check if any items are the same
+                // if there are, add the quantities
+                // no same items, just add localStorage cart to user's cart
+
+                _context5.next = 6;
                 return _axios.default.get("/api/productorder/".concat(orderId));
 
-              case 5:
-                cart = _context4.sent;
-                cartItems = cart.data; // array of objects
+              case 6:
+                userCart = _context5.sent;
+                localCart.forEach(
+                /*#__PURE__*/
+                function () {
+                  var _ref6 = _asyncToGenerator(
+                  /*#__PURE__*/
+                  regeneratorRuntime.mark(function _callee4(localItem) {
+                    var overlapItem, id, quantity;
+                    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                      while (1) {
+                        switch (_context4.prev = _context4.next) {
+                          case 0:
+                            overlapItem = userCart.data.filter(function (userItem) {
+                              return userItem.productId === localItem.productId;
+                            }); // returns array of one overlapping item, if exists
+                            // if localCart item overlaps userCart item...
 
-                console.log('userReducer: fetchCart thunk: cart.data: ', cartItems);
-                action = getCart(cartItems);
-                dispatch(action);
-                _context4.next = 15;
+                            if (!overlapItem.length) {
+                              _context4.next = 8;
+                              break;
+                            }
+
+                            id = overlapItem[0].id;
+                            quantity = Number(overlapItem[0].quantity) + Number(localItem.quantity);
+                            _context4.next = 6;
+                            return _axios.default.put('/api/productorder', {
+                              id: id,
+                              quantity: quantity
+                            });
+
+                          case 6:
+                            _context4.next = 10;
+                            break;
+
+                          case 8:
+                            _context4.next = 10;
+                            return _axios.default.post('/api/productorder', {
+                              orderId: orderId,
+                              productId: localItem.productId,
+                              quantity: localItem.quantity
+                            });
+
+                          case 10:
+                          case "end":
+                            return _context4.stop();
+                        }
+                      }
+                    }, _callee4, this);
+                  }));
+
+                  return function (_x5) {
+                    return _ref6.apply(this, arguments);
+                  };
+                }()); // after updating or adding to userCart, clear localStorage
+
+                localStorage.clear();
+
+              case 9:
+                _context5.next = 14;
                 break;
 
-              case 12:
-                _context4.prev = 12;
-                _context4.t0 = _context4["catch"](0);
-                console.error(_context4.t0);
+              case 11:
+                _context5.prev = 11;
+                _context5.t0 = _context5["catch"](0);
+                console.error(_context5.t0);
 
-              case 15:
+              case 14:
               case "end":
-                return _context4.stop();
+                return _context5.stop();
             }
           }
-        }, _callee4, this, [[0, 12]]);
+        }, _callee5, this, [[0, 11]]);
       }));
 
       return function (_x4) {
@@ -2594,25 +2825,72 @@ var fetchCart = function fetchCart(orderId) {
   );
 };
 
-exports.fetchCart = fetchCart;
+exports.combineCarts = combineCarts;
 
-var addProductToCart = function addProductToCart(_ref6) {
-  var quantity = _ref6.quantity,
-      productId = _ref6.productId,
-      orderId = _ref6.orderId;
+var fetchCart = function fetchCart(orderId) {
   return (
     /*#__PURE__*/
     function () {
       var _ref7 = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee5(dispatch) {
-        var res, addedProduct, action;
-        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      regeneratorRuntime.mark(function _callee6(dispatch) {
+        var newCart, newCartItems;
+        return regeneratorRuntime.wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
-                _context5.prev = 0;
-                _context5.next = 3;
+                _context6.prev = 0;
+                console.log('userReducer: fetchCart thunk called.');
+                _context6.next = 4;
+                return _axios.default.get("/api/productorder/".concat(orderId));
+
+              case 4:
+                newCart = _context6.sent;
+                newCartItems = newCart.data;
+                console.log('userReducer: newCartItems:', newCartItems);
+                dispatch(getCart(newCartItems));
+                _context6.next = 13;
+                break;
+
+              case 10:
+                _context6.prev = 10;
+                _context6.t0 = _context6["catch"](0);
+                console.error(_context6.t0);
+
+              case 13:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this, [[0, 10]]);
+      }));
+
+      return function (_x6) {
+        return _ref7.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.fetchCart = fetchCart;
+
+var addProductToCart = function addProductToCart(_ref8) {
+  var quantity = _ref8.quantity,
+      productId = _ref8.productId,
+      orderId = _ref8.orderId;
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref9 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee7(dispatch) {
+        var res, addedProduct, action;
+        return regeneratorRuntime.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _context7.prev = 0;
+                _context7.next = 3;
                 return _axios.default.post('/api/productorder', {
                   quantity: quantity,
                   productId: productId,
@@ -2620,29 +2898,29 @@ var addProductToCart = function addProductToCart(_ref6) {
                 });
 
               case 3:
-                res = _context5.sent;
+                res = _context7.sent;
                 // console.log('ADD TO CART THUNK RESPONSE', res)
                 addedProduct = res.data;
                 action = addProduct(addedProduct);
                 dispatch(action);
-                _context5.next = 12;
+                _context7.next = 12;
                 break;
 
               case 9:
-                _context5.prev = 9;
-                _context5.t0 = _context5["catch"](0);
-                console.error(_context5.t0);
+                _context7.prev = 9;
+                _context7.t0 = _context7["catch"](0);
+                console.error(_context7.t0);
 
               case 12:
               case "end":
-                return _context5.stop();
+                return _context7.stop();
             }
           }
-        }, _callee5, this, [[0, 9]]);
+        }, _callee7, this, [[0, 9]]);
       }));
 
-      return function (_x5) {
-        return _ref7.apply(this, arguments);
+      return function (_x7) {
+        return _ref9.apply(this, arguments);
       };
     }()
   );
@@ -2654,45 +2932,45 @@ var checkoutThunk = function checkoutThunk(userId) {
   return (
     /*#__PURE__*/
     function () {
-      var _ref8 = _asyncToGenerator(
+      var _ref10 = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee6(dispatch) {
+      regeneratorRuntime.mark(function _callee8(dispatch) {
         var res;
-        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+        return regeneratorRuntime.wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
-                _context6.prev = 0;
-                _context6.next = 3;
+                _context8.prev = 0;
+                _context8.next = 3;
                 return _axios.default.put("/api/orders/".concat(userId));
 
               case 3:
-                _context6.next = 5;
+                _context8.next = 5;
                 return _axios.default.post('/api/orders', {
                   userId: userId
                 });
 
               case 5:
-                res = _context6.sent;
+                res = _context8.sent;
                 dispatch(checkout(res.data.id));
-                _context6.next = 12;
+                _context8.next = 12;
                 break;
 
               case 9:
-                _context6.prev = 9;
-                _context6.t0 = _context6["catch"](0);
-                console.log(_context6.t0);
+                _context8.prev = 9;
+                _context8.t0 = _context8["catch"](0);
+                console.log(_context8.t0);
 
               case 12:
               case "end":
-                return _context6.stop();
+                return _context8.stop();
             }
           }
-        }, _callee6, this, [[0, 9]]);
+        }, _callee8, this, [[0, 9]]);
       }));
 
-      return function (_x6) {
-        return _ref8.apply(this, arguments);
+      return function (_x8) {
+        return _ref10.apply(this, arguments);
       };
     }()
   );
@@ -2704,42 +2982,42 @@ var fetchOrderHistory = function fetchOrderHistory(userId) {
   return (
     /*#__PURE__*/
     function () {
-      var _ref9 = _asyncToGenerator(
+      var _ref11 = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee7(dispatch) {
+      regeneratorRuntime.mark(function _callee9(dispatch) {
         var res, orderHistory, action;
-        return regeneratorRuntime.wrap(function _callee7$(_context7) {
+        return regeneratorRuntime.wrap(function _callee9$(_context9) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context9.prev = _context9.next) {
               case 0:
-                _context7.prev = 0;
+                _context9.prev = 0;
                 console.log('FETCH HISTORY', userId);
-                _context7.next = 4;
+                _context9.next = 4;
                 return _axios.default.get("/api/orders/".concat(userId, "/history"));
 
               case 4:
-                res = _context7.sent;
+                res = _context9.sent;
                 orderHistory = res.data;
                 action = getOrderHistory(orderHistory);
                 dispatch(action);
-                _context7.next = 13;
+                _context9.next = 13;
                 break;
 
               case 10:
-                _context7.prev = 10;
-                _context7.t0 = _context7["catch"](0);
-                console.error(_context7.t0);
+                _context9.prev = 10;
+                _context9.t0 = _context9["catch"](0);
+                console.error(_context9.t0);
 
               case 13:
               case "end":
-                return _context7.stop();
+                return _context9.stop();
             }
           }
-        }, _callee7, this, [[0, 10]]);
+        }, _callee9, this, [[0, 10]]);
       }));
 
-      return function (_x7) {
-        return _ref9.apply(this, arguments);
+      return function (_x9) {
+        return _ref11.apply(this, arguments);
       };
     }()
   );
@@ -2751,48 +3029,48 @@ var me = function me() {
   return (
     /*#__PURE__*/
     function () {
-      var _ref10 = _asyncToGenerator(
+      var _ref12 = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee8(dispatch) {
+      regeneratorRuntime.mark(function _callee10(dispatch) {
         var user, order, localUser;
-        return regeneratorRuntime.wrap(function _callee8$(_context8) {
+        return regeneratorRuntime.wrap(function _callee10$(_context10) {
           while (1) {
-            switch (_context8.prev = _context8.next) {
+            switch (_context10.prev = _context10.next) {
               case 0:
-                _context8.prev = 0;
+                _context10.prev = 0;
                 console.log('userReducer: me thunk reached.');
-                _context8.next = 4;
+                _context10.next = 4;
                 return _axios.default.get('/auth/me');
 
               case 4:
-                user = _context8.sent;
-                _context8.next = 7;
+                user = _context10.sent;
+                _context10.next = 7;
                 return _axios.default.get("/api/orders/".concat(user.data.id));
 
               case 7:
-                order = _context8.sent;
+                order = _context10.sent;
                 localUser = _objectSpread({}, user.data, {
                   orderId: order.data.id
                 });
                 dispatch(getUser(localUser || initialState.user));
-                _context8.next = 15;
+                _context10.next = 15;
                 break;
 
               case 12:
-                _context8.prev = 12;
-                _context8.t0 = _context8["catch"](0);
-                console.error(_context8.t0);
+                _context10.prev = 12;
+                _context10.t0 = _context10["catch"](0);
+                console.error(_context10.t0);
 
               case 15:
               case "end":
-                return _context8.stop();
+                return _context10.stop();
             }
           }
-        }, _callee8, this, [[0, 12]]);
+        }, _callee10, this, [[0, 12]]);
       }));
 
-      return function (_x8) {
-        return _ref10.apply(this, arguments);
+      return function (_x10) {
+        return _ref12.apply(this, arguments);
       };
     }()
   );
@@ -2804,16 +3082,16 @@ var auth = function auth(email, password, method, firstName, lastName, billingAd
   return (
     /*#__PURE__*/
     function () {
-      var _ref11 = _asyncToGenerator(
+      var _ref13 = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee9(dispatch) {
+      regeneratorRuntime.mark(function _callee11(dispatch) {
         var user, order, localUser, url;
-        return regeneratorRuntime.wrap(function _callee9$(_context9) {
+        return regeneratorRuntime.wrap(function _callee11$(_context11) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context11.prev = _context11.next) {
               case 0:
-                _context9.prev = 0;
-                _context9.next = 3;
+                _context11.prev = 0;
+                _context11.next = 3;
                 return _axios.default.post("/auth/".concat(method), {
                   email: email,
                   password: password,
@@ -2824,23 +3102,23 @@ var auth = function auth(email, password, method, firstName, lastName, billingAd
                 });
 
               case 3:
-                user = _context9.sent;
-                _context9.next = 6;
+                user = _context11.sent;
+                _context11.next = 6;
                 return _axios.default.get("/api/orders/".concat(user.data.id));
 
               case 6:
-                order = _context9.sent;
+                order = _context11.sent;
                 localUser = _objectSpread({}, user.data, {
                   orderId: order.data.id
                 });
-                _context9.next = 13;
+                _context11.next = 13;
                 break;
 
               case 10:
-                _context9.prev = 10;
-                _context9.t0 = _context9["catch"](0);
-                return _context9.abrupt("return", dispatch(getUser({
-                  error: _context9.t0
+                _context11.prev = 10;
+                _context11.t0 = _context11["catch"](0);
+                return _context11.abrupt("return", dispatch(getUser({
+                  error: _context11.t0
                 })));
 
               case 13:
@@ -2864,14 +3142,14 @@ var auth = function auth(email, password, method, firstName, lastName, billingAd
 
               case 14:
               case "end":
-                return _context9.stop();
+                return _context11.stop();
             }
           }
-        }, _callee9, this, [[0, 10]]);
+        }, _callee11, this, [[0, 10]]);
       }));
 
-      return function (_x9) {
-        return _ref11.apply(this, arguments);
+      return function (_x11) {
+        return _ref13.apply(this, arguments);
       };
     }()
   );
@@ -2883,15 +3161,15 @@ var logout = function logout() {
   return (
     /*#__PURE__*/
     function () {
-      var _ref12 = _asyncToGenerator(
+      var _ref14 = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee10(dispatch) {
-        return regeneratorRuntime.wrap(function _callee10$(_context10) {
+      regeneratorRuntime.mark(function _callee12(dispatch) {
+        return regeneratorRuntime.wrap(function _callee12$(_context12) {
           while (1) {
-            switch (_context10.prev = _context10.next) {
+            switch (_context12.prev = _context12.next) {
               case 0:
-                _context10.prev = 0;
-                _context10.next = 3;
+                _context12.prev = 0;
+                _context12.next = 3;
                 return _axios.default.post('/auth/logout');
 
               case 3:
@@ -2899,24 +3177,24 @@ var logout = function logout() {
 
                 _history.default.push('/login');
 
-                _context10.next = 10;
+                _context12.next = 10;
                 break;
 
               case 7:
-                _context10.prev = 7;
-                _context10.t0 = _context10["catch"](0);
-                console.error(_context10.t0);
+                _context12.prev = 7;
+                _context12.t0 = _context12["catch"](0);
+                console.error(_context12.t0);
 
               case 10:
               case "end":
-                return _context10.stop();
+                return _context12.stop();
             }
           }
-        }, _callee10, this, [[0, 7]]);
+        }, _callee12, this, [[0, 7]]);
       }));
 
-      return function (_x10) {
-        return _ref12.apply(this, arguments);
+      return function (_x12) {
+        return _ref14.apply(this, arguments);
       };
     }()
   );
