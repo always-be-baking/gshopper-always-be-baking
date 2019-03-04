@@ -2,9 +2,17 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchOrderHistory} from '../store/userReducer'
 
+let num = 0
 class MyAccount extends Component {
   constructor(props) {
     super(props)
+  }
+
+  async componentDidUpdate(prevProps, prevState) {
+    while (num < 1) {
+      num++
+      await this.props.fetchOrderHistory(this.props.user.id)
+    }
   }
 
   async componentDidMount() {
