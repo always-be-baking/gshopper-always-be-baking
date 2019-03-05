@@ -121,6 +121,10 @@ export const combineCarts = orderId => async dispatch => {
 export const fetchCart = orderId => async dispatch => {
   try {
     console.log('userReducer: fetchCart thunk called.')
+    let localCart = JSON.parse(localStorage.getItem('cart')) //array of objects
+    if (localCart !== null && localCart.length) {
+      await dispatch(combineCarts(orderId))
+    }
     const newCart = await axios.get(`/api/productorder/${orderId}`)
     const newCartItems = newCart.data
     console.log('userReducer: newCartItems:', newCartItems)
@@ -220,6 +224,7 @@ export const auth = (
       )
       let url = localStorage.getItem('redirect')
       history.push(url)
+      localStorage.removeItem('redirect')
     } else {
       console.log(
         'userReducer: auth dispatch: user redirected to myaccount page.'
