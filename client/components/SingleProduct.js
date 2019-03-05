@@ -44,6 +44,10 @@ class SingleProduct extends Component {
       this.props.addProductToCart(obj)
     } else {
       // user not logged in
+      if (!JSON.parse(localStorage.getItem('cart'))) {
+        console.log('Routes component: creating localStorage cart.')
+        localStorage.setItem('cart', JSON.stringify([]))
+      }
       let localCart = JSON.parse(localStorage.getItem('cart'))
       let alreadyAdded = localCart.find(item => item.productId === productId)
       if (alreadyAdded) {

@@ -30,15 +30,6 @@ class MyAccount extends Component {
   }
 
   render() {
-    // if (!this.props.user.length) {
-    //   return <div>loading...</div>
-    // }
-    console.log(
-      'this.props.user',
-      this.props.user,
-      'this.props.orders',
-      this.props.orders
-    )
     return (
       <div>
         My Information

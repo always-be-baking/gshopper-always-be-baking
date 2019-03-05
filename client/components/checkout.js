@@ -35,12 +35,7 @@ class Checkout extends Component {
   // }
 
   async componentDidUpdate(prevProps, prevState) {
-    let localCart = JSON.parse(localStorage.getItem('cart'))
-    if (localCart[0] && !this.props.user.id) {
-      console.log('Checkout componentDidMount: user not logged in.')
-      localStorage.setItem('redirect', this.props.match.path)
-      this.props.history.push('/login')
-    } else if (this.props.user.id) {
+    if (this.props.user.id) {
       if (prevProps !== this.props) {
         if (!prevProps.cart[0] && !prevProps.user.id) {
           await this.props.fetchCart(this.props.user.orderId)
@@ -51,8 +46,16 @@ class Checkout extends Component {
 
   async componentDidMount() {
     try {
-      await this.props.fetchCart(this.props.user.orderId)
-      await this.setState({...this.props.user})
+      console.log('checkout component: componentdidmount reached')
+      let localCart = JSON.parse(localStorage.getItem('cart'))
+      if (localCart[0] && !this.props.user.id) {
+        console.log('Checkout componentDidMount: user not logged in.')
+        localStorage.setItem('redirect', '/cart')
+        this.props.history.push('/login')
+      } else {
+        await this.props.fetchCart(this.props.user.orderId)
+        await this.setState({...this.props.user})
+      }
     } catch (error) {
       console.error('fetch did not work', error)
     }
