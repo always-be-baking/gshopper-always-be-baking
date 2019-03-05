@@ -7,7 +7,8 @@ class Checkout extends Component {
     super(props)
     this.state = {
       shippingAddress: '',
-      billingAddress: ''
+      billingAddress: '',
+      noItems: false
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -21,18 +22,16 @@ class Checkout extends Component {
 
   async handleSubmit(evt) {
     evt.preventDefault()
-    await this.props.checkoutThunk(this.props.user.id)
-    this.props.updateUserThunk(this.state)
-    this.props.history.push('/thanks')
+    if (this.props.cart[0]) {
+      await this.props.checkoutThunk(this.props.user.id)
+      this.props.updateUserThunk(this.state)
+      this.props.history.push('/thanks')
+    } else {
+      this.setState({
+        noItems: true
+      })
+    }
   }
-
-  // componentWillMount() {
-  //   if (!this.props.user.id) {
-  //     console.log('Checkout componentWillMount: user not logged in.')
-  //     localStorage.setItem('redirect', this.props.match.path)
-  //     this.props.history.push('/login')
-  //   }
-  // }
 
   async componentDidUpdate(prevProps, prevState) {
     if (this.props.user.id) {
@@ -64,14 +63,12 @@ class Checkout extends Component {
   render() {
     return (
       <div>
-        {/* {<div>{this.props.product}</div>} */}
         {this.props.cart.map(item => (
           <div key={item.id}>
             <p>Name of Product: {item.product.name}</p>
             <p>Quantity Selected: {item.quantity}</p>
             <p>Price per Product: ${item.product.price}</p>
             <br />
-            {/* <p>{subtotal +=item.quantity * item.product.price}</p> */}
           </div>
         ))}
         <div>
@@ -79,7 +76,6 @@ class Checkout extends Component {
             Total Amount Due : $
             {this.props.cart.reduce((total, item) => {
               total += item.quantity * parseFloat(item.product.price)
-              //   console.log('total', total)
               return total
             }, 0)}
           </h2>
@@ -109,6 +105,7 @@ class Checkout extends Component {
           <button type="submit" className="checkout">
             Submit
           </button>
+          {this.state.noItems && <h1>Cart is empty!</h1>}
         </form>
       </div>
     )

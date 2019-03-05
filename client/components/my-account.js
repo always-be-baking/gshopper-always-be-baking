@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {fetchOrderHistory} from '../store/userReducer'
 
 let num = 0
+
 class MyAccount extends Component {
   constructor(props) {
     super(props)
@@ -18,7 +19,7 @@ class MyAccount extends Component {
   async componentDidMount() {
     try {
       let localCart = JSON.parse(localStorage.getItem('cart'))
-      if (localCart && !this.props.user.id) {
+      if (localCart[0] && !this.props.user.id) {
         console.log('myAccount componentDidUpdate: no user found.')
         localStorage.setItem('redirect', this.props.match.path)
         this.props.history.push('/login')
@@ -32,33 +33,45 @@ class MyAccount extends Component {
   render() {
     return (
       <div>
-        My Information
+        <h3>Welcome {this.props.user.firstName}!</h3>
         <br />
-        Name:
-        {this.props.user.firstName} {this.props.user.lastName}
-        <br />
-        Email:
-        {this.props.user.email}
-        <br />
-        Billing Address:
-        {this.props.user.billingAddress}
-        <br />
-        Shipping Address:
-        {this.props.user.shippingAddress}
+        Profile Information:
+        <p>
+          <br />
+          Name: {this.props.user.firstName} {this.props.user.lastName}
+          <br />
+          Email: {this.props.user.email}
+          <br />
+          Billing Address: {this.props.user.billingAddress}
+          <br />
+          Shipping Address: {this.props.user.shippingAddress}
+        </p>
         <div>
-          My Order History
-          {this.props.orders.map(order => (
-            <div key={order.id}>
-              <p>Order ID: {order.id} </p>
-              {order.products.map(product => (
-                <div key={product.id}>
-                  <p> Name: {product.name} </p>
-                  <p> Quantity: {product.product_order.quantity} </p>
-                  <img src={product.image} />
-                </div>
-              ))}
-            </div>
-          ))}
+          <h3>My Order History: </h3>
+          <hr />
+          {this.props.orders.map(order => {
+            let total = 0
+            return (
+              <div key={order.id} style={{marginLeft: '10px'}}>
+                <p>Order ID: {order.id} </p>
+                <p>Items ordered:</p>
+                {order.products.map(product => {
+                  total += Number(product.price)
+                  return (
+                    <div key={product.id}>
+                      <p>
+                        {' '}
+                        {product.name} - Quantity:{' '}
+                        {product.product_order.quantity} - Price:{' '}
+                        {product.price}{' '}
+                      </p>
+                    </div>
+                  )
+                })}
+                <h4>Total: {total}</h4>
+              </div>
+            )
+          })}
         </div>
       </div>
     )
