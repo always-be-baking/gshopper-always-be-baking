@@ -31,9 +31,9 @@ const ProductPreview = props => {
           <button type="submit" className="cart">
             Add to Cart
           </button>
-          {props.state.addedtoCart[1] && (
+          {/* {props.state.addedtoCart[1] && (
             <h3>{props.state.addedtoCart[0]} added to cart!</h3>
-          )}
+          )} */}
         </form>
       </div>
     </div>
