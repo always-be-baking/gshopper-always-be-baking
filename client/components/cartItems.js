@@ -47,7 +47,7 @@ const CartItems = props => {
           )
         })
       ) : (
-        <h1>No items in cart!</h1>
+        <h1 className="noItem">Your shopping cart is empty.</h1>
       )}
     </div>
   )

@@ -2,13 +2,27 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchOrderHistory} from '../store/userReducer'
 
+let num = 0
 class MyAccount extends Component {
   constructor(props) {
     super(props)
   }
 
+  async componentDidUpdate(prevProps, prevState) {
+    while (num < 1) {
+      num++
+      await this.props.fetchOrderHistory(this.props.user.id)
+    }
+  }
+
   async componentDidMount() {
     try {
+      let localCart = JSON.parse(localStorage.getItem('cart'))
+      if (localCart && !this.props.user.id) {
+        console.log('myAccount componentDidUpdate: no user found.')
+        localStorage.setItem('redirect', this.props.match.path)
+        this.props.history.push('/login')
+      }
       await this.props.fetchOrderHistory(this.props.user.id)
     } catch (error) {
       console.log('fetch did not work', error)
