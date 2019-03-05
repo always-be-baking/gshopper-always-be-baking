@@ -195,3 +195,20 @@ input:focus {
   padding: 15px 70px; /* top/bottom left/right */
   box-shadow: 1px 1px 3px #999;
 }
+
+/* .google {
+  padding-top: 50px;
+  font-size: 25px;
+  font-style: italic;
+  text-decoration: underline;
+} */
+
+#thanks {
+  margin-top: 120px;
+  font-size: 50px;
+}
+
+.noItem {
+  margin-top: 120px;
+  font-size: 50px;
+}
