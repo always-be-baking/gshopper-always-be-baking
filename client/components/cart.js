@@ -19,7 +19,7 @@ class Cart extends Component {
   }
 
   async handleQuantity(id, prodId, event) {
-    console.log(event.target.value)
+    console.log('THIS PROS USER  ', this.props.user)
     const sendData = {quantity: event.target.value, id}
 
     // user logged in

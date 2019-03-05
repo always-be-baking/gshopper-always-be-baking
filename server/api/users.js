@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const {User} = require('../db/models')
+const {isAdmin, isAdminOrUser} = require('./route_security')
 module.exports = router
 
 router.get('/', isAdmin, async (req, res, next) => {
@@ -16,7 +17,7 @@ router.get('/', isAdmin, async (req, res, next) => {
   }
 })
 
-router.put('/', async (req, res, next) => {
+router.put('/', isAdminOrUser, async (req, res, next) => {
   try {
     const user = req.body
     const updatedUser = await User.update(
@@ -34,8 +35,8 @@ router.put('/', async (req, res, next) => {
   }
 })
 
-// admin authentication middleware - if the person is an admin, let them view all users, if not, redirect to our homepage - if someone is not an admin, they should only be able to see their own user information
-function isAdmin(req, res, next) {
-  if (req.user && req.user.isAdmin === true) return next()
-  res.redirect('/')
-}
+// // admin authentication middleware - if the person is an admin, let them view all users, if not, redirect to our homepage - if someone is not an admin, they should only be able to see their own user information
+// function isAdmin(req, res, next) {
+//   if (req.user && req.user.isAdmin === true) return next()
+//   res.redirect('/')
+// }
