@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Order, Product, ProductOrders} = require('../db/models')
+const {Order, Product} = require('../db/models')
 module.exports = router
 
 router.get('/:userId', async (req, res, next) => {
@@ -7,7 +7,7 @@ router.get('/:userId', async (req, res, next) => {
     const userId = req.params.userId
     const order = await Order.findOne({
       where: {
-        userId,
+        userId: req.user.id,
         bought: false
       }
     })
@@ -22,7 +22,7 @@ router.get('/:userId/history', async (req, res, next) => {
     const userId = req.params.userId
     const pastOrders = await Order.findAll({
       where: {
-        userId,
+        userId: req.user.id,
         bought: true
       },
       include: [{model: Product}]
@@ -37,7 +37,7 @@ router.post('/', async (req, res, next) => {
   try {
     const userId = req.body.userId
     const newOrder = await Order.create({
-      userId,
+      userId: req.user.id,
       bought: false
     })
     res.status(201).json(newOrder)
@@ -55,7 +55,7 @@ router.put('/:userId', async (req, res, next) => {
       },
       {
         where: {
-          userId,
+          userId: req.user.id,
           bought: false
         },
         returning: true,

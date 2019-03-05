@@ -19,7 +19,7 @@ class Cart extends Component {
   }
 
   async handleQuantity(id, prodId, event) {
-    console.log(event.target.value)
+    console.log('THIS PROS USER  ', this.props.user)
     const sendData = {quantity: event.target.value, id}
 
     // user logged in
@@ -69,6 +69,9 @@ class Cart extends Component {
     // console.log('Cart component: componentDidUpdate: prevProps', prevProps)
     if (this.props.user.id) {
       if (prevProps !== this.props) {
+        if (!prevProps.cart[0]) {
+          await this.props.fetchCart(this.props.user.orderId)
+        }
         await this.setState({
           cart: this.props.cart
         })
