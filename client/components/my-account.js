@@ -35,7 +35,7 @@ class MyAccount extends Component {
     )
     return (
       <div>
-        My Information
+        <h2>My Information</h2>
         <br />
         Name:
         {this.props.user.firstName} {this.props.user.lastName}
