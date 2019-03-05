@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const {User} = require('../db/models')
+const {isAdmin, isAdminOrUser} = require('./route_security')
 module.exports = router
 
 router.get('/', isAdmin, async (req, res, next) => {
@@ -16,7 +17,7 @@ router.get('/', isAdmin, async (req, res, next) => {
   }
 })
 
-router.put('/', async (req, res, next) => {
+router.put('/', isAdminOrUser, async (req, res, next) => {
   try {
     const user = req.body
     const updatedUser = await User.update(

@@ -1,5 +1,7 @@
 const router = require('express').Router()
 const {ProductOrder, Product} = require('../db/models')
+const {isAdminOrUser} = require('./route_security')
+
 module.exports = router
 
 router.get('/:orderId', async (req, res, next) => {
@@ -17,7 +19,7 @@ router.get('/:orderId', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', isAdminOrUser, async (req, res, next) => {
   try {
     // posting from singleProductPage so no ProductOrder uid avail
     const productId = req.body.productId
@@ -52,7 +54,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.put('/', async (req, res, next) => {
+router.put('/', isAdminOrUser, async (req, res, next) => {
   try {
     const quantity = req.body.quantity
     const id = req.body.id
@@ -80,7 +82,7 @@ router.put('/', async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', isAdminOrUser, async (req, res, next) => {
   try {
     const id = req.params.id
     // console.log('delete route reached', id)
