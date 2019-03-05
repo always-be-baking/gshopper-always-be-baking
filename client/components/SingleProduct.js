@@ -72,7 +72,7 @@ class SingleProduct extends Component {
       console.log('LocalCart: ', localCart)
       localStorage.setItem('cart', JSON.stringify(localCart))
     }
-    toast.success('Added to cart! TOAST')
+    toast.success(`${this.state.quantity} added to cart!`)
     this.setState({
       addedtoCart: [this.state.quantity, true]
     })
