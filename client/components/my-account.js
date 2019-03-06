@@ -49,7 +49,8 @@ class MyAccount extends Component {
         <div>
           <h3>My Order History: </h3>
           <hr />
-          {this.props.orders.map(order => {
+          {this.props.order
+            ? this.props.orders.map(order => {
             let total = 0
             return (
               <div key={order.id} style={{marginLeft: '10px'}}>
@@ -71,7 +72,9 @@ class MyAccount extends Component {
                 <h4>Total: {total}</h4>
               </div>
             )
-          })}
+          })
+          : <p>No orders...</p>
+        }
         </div>
       </div>
     )

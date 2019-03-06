@@ -15,7 +15,7 @@ async function seed() {
       password: '123',
       shippingAddress: '5 hannover sq New York City, NY 10000',
       billingAddress: '5 hannover sq New York City, NY 10000',
-      isAdmin: true
+      isAdmin: false
     },
     {
       firstName: 'emmy',
