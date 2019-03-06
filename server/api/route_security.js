@@ -7,7 +7,6 @@ function isAdmin(req, res, next) {
 }
 
 function isAdminOrUser(req, res, next) {
-  //   console.log('req.user.id', req.user.id == req.body.id)
   if (req.user && (req.user.id == req.body.id || req.user.isAdmin))
     return next()
   res.sendStatus(401)
@@ -18,25 +17,6 @@ const isLoggedInUser = (req, res, next) => {
   if (req.user.id === req.body.id) next()
   res.redirect('/')
 }
-
-// const isAdminOrUser = async (req, res, next) => {
-//   try {
-//     const user = await User.findOne({where: {id: req.body.userId}})
-//     if (user.isAdmin === true) next()
-//     else {
-//       const id = req.body.id
-//       const {orderId} = await ProductOrder.findOne({
-//         where: {id}
-//       })
-//       const {userId} = await Order.findOne({
-//         where: {id: orderId}
-//       })
-//       userId === req.body.userId ? next() : res.redirect('/')
-//     }
-//   } catch (error) {
-//     next(error)
-//   }
-// }
 
 module.exports = {
   isAdminOrUser,

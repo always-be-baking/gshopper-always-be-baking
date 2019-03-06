@@ -13,7 +13,6 @@ const CartItems = props => {
     <div>
       {props.cart.length ? (
         props.cart.map(item => {
-          // console.log('productOrder item: ', item)
           return (
             <div key={keygen()}>
               <img src={item.product.image} style={{width: '50px'}} />

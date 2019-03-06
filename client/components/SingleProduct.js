@@ -15,11 +15,10 @@ class SingleProduct extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   async componentDidMount() {
-    // console.log('component did mount', this.props.match)
     try {
       await this.props.fetchOneProduct(this.props.match.params.id)
     } catch (err) {
-      console.log('fetch didnt work')
+      console.log('fetch did nor work')
     }
   }
 
@@ -41,12 +40,10 @@ class SingleProduct extends Component {
 
     // user logged in
     if (this.props.user.id) {
-      console.log('ADD TO CART: req.body sent to thunk: ', obj)
       this.props.addProductToCart(obj)
     } else {
       // user not logged in
       if (!JSON.parse(localStorage.getItem('cart'))) {
-        console.log('Routes component: creating localStorage cart.')
         localStorage.setItem('cart', JSON.stringify([]))
       }
       let localCart = JSON.parse(localStorage.getItem('cart'))
@@ -68,7 +65,6 @@ class SingleProduct extends Component {
           }
         })
       }
-      console.log('LocalCart: ', localCart)
       localStorage.setItem('cart', JSON.stringify(localCart))
     }
 

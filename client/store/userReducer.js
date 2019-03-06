@@ -65,9 +65,7 @@ export const deleteProductThunk = id => async dispatch => {
 export const updateQuantityThunk = ({id, quantity}) => async dispatch => {
   try {
     const res = await axios.put('/api/productorder/', {id, quantity})
-    console.log('userReducer: updatequantity thunk called.')
     const updatedProduct = res.data
-    console.log('userReducer: updatedproduct:', updatedProduct)
     const action = updateQuantity(updatedProduct)
     dispatch(action)
   } catch (error) {
@@ -80,7 +78,6 @@ export const combineCarts = orderId => async dispatch => {
     // check if localStorage has anything in cart
     let localCart = JSON.parse(localStorage.getItem('cart')) //array of objects
     if (localCart !== null && localCart.length) {
-      console.log('userReducer: fetchCart thunk: localCart!==null&&hasLength')
       // if localStorage has cart items, get logged in user's open cart
       // check if any items are the same
       // if there are, add the quantities
@@ -120,14 +117,12 @@ export const combineCarts = orderId => async dispatch => {
 
 export const fetchCart = orderId => async dispatch => {
   try {
-    console.log('userReducer: fetchCart thunk called.')
     let localCart = JSON.parse(localStorage.getItem('cart')) //array of objects
     if (localCart !== null && localCart.length) {
       await dispatch(combineCarts(orderId))
     }
     const newCart = await axios.get(`/api/productorder/${orderId}`)
     const newCartItems = newCart.data
-    console.log('userReducer: newCartItems:', newCartItems)
     dispatch(getCart(newCartItems))
   } catch (error) {
     console.error(error)
@@ -145,7 +140,6 @@ export const addProductToCart = ({
       productId,
       orderId
     })
-    // console.log('ADD TO CART THUNK RESPONSE', res)
     const addedProduct = res.data
     const action = addProduct(addedProduct)
     dispatch(action)
@@ -166,7 +160,6 @@ export const checkoutThunk = userId => async dispatch => {
 
 export const fetchOrderHistory = userId => async dispatch => {
   try {
-    console.log('FETCH HISTORY', userId)
     const res = await axios.get(`/api/orders/${userId}/history`)
     const orderHistory = res.data
     const action = getOrderHistory(orderHistory)
@@ -178,7 +171,6 @@ export const fetchOrderHistory = userId => async dispatch => {
 
 export const me = () => async dispatch => {
   try {
-    console.log('userReducer: me thunk reached.')
     const user = await axios.get('/auth/me')
     const order = await axios.get(`/api/orders/${user.data.id}`)
     const localUser = {...user.data, orderId: order.data.id}
@@ -222,19 +214,12 @@ export const auth = (
   }
 
   try {
-    console.log('userReducer: auth dispatch reached, user/password found.')
     dispatch(getUser(localUser))
     if (localStorage.getItem('redirect')) {
-      console.log(
-        'userReducer: auth dispatch: redirectUrl detected on localStorage.'
-      )
       let url = localStorage.getItem('redirect')
       history.push(url)
       localStorage.removeItem('redirect')
     } else {
-      console.log(
-        'userReducer: auth dispatch: user redirected to myaccount page.'
-      )
       history.push('/myaccount')
     }
   } catch (dispatchOrHistoryErr) {
