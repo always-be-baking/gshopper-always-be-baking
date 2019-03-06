@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const {Order, Product} = require('../db/models')
+
 module.exports = router
 
 router.get('/:userId', async (req, res, next) => {
@@ -67,3 +68,17 @@ router.put('/:userId', async (req, res, next) => {
     next(error)
   }
 })
+
+// router.post('/save-stripe-token', async (req, res, next) => {
+//   try {
+//     let {status} = await stripe.charges.create({
+//       amount: 2000,
+//       currency: 'usd',
+//       description: 'An example charge',
+//       source: req.body
+//     })
+//     res.json({status})
+//   } catch (error) {
+//     next(error)
+//   }
+// })

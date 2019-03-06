@@ -4,23 +4,28 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width initial-scale=1.0" />
     <title>Bakery</title>
-    <link rel="stylesheet" type="text/css" href="/semantic/semantic.min.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/semantic/semantic.min.css" /> -->
     <link rel="stylesheet" href="/style.css" />
     <link
       href="https://fonts.googleapis.com/css?family=Roboto+Condensed"
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css?family=Comfortaa+Normal"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Comfortaa+Normal"
     />
 
-    <script
+    <!-- <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
       crossorigin="anonymous"
-    ></script>
-    <script src="/semantic/semantic.min.js"></script>
+    ></script> -->
+    <!-- <script src="/semantic/semantic.min.js"></script> -->
+    <script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
+    <script>
+      paypal.Buttons().render('body')
+    </script>
+
     <script defer src="/bundle.js"></script>
   </head>
   <body>

@@ -12,6 +12,7 @@ export {default as Checkout} from './checkout'
 export {default as Thanks} from './thanks'
 export {default as MyAccount} from './my-account'
 export {default as HomePage} from './HomePage'
+// export {default as PaypalButton} from './PaypalButton'
 
 export {Signup} from './auth-form'
 export {Login} from './signin-form'
