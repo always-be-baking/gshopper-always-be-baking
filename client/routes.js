@@ -32,10 +32,7 @@ class Routes extends Component {
 
   render() {
     console.log('Routes component: rendering.')
-    if (!JSON.parse(localStorage.getItem('cart'))) {
-      console.log('Routes component: creating localStorage cart.')
-      localStorage.setItem('cart', JSON.stringify([]))
-    }
+
     const {isLoggedIn} = this.props
 
     return (
