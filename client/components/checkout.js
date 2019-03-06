@@ -7,7 +7,8 @@ class Checkout extends Component {
     super(props)
     this.state = {
       shippingAddress: '',
-      billingAddress: ''
+      billingAddress: '',
+      noItems: false
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -21,28 +22,21 @@ class Checkout extends Component {
 
   async handleSubmit(evt) {
     evt.preventDefault()
-    await this.props.checkoutThunk(this.props.user.id)
-    this.props.updateUserThunk(this.state)
-    this.props.history.push('/thanks')
+    if (this.props.cart[0]) {
+      await this.props.checkoutThunk(this.props.user.id)
+      this.props.updateUserThunk(this.state)
+      this.props.history.push('/thanks')
+    } else {
+      this.setState({
+        noItems: true
+      })
+    }
   }
 
-  // componentWillMount() {
-  //   if (!this.props.user.id) {
-  //     console.log('Checkout componentWillMount: user not logged in.')
-  //     localStorage.setItem('redirect', this.props.match.path)
-  //     this.props.history.push('/login')
-  //   }
-  // }
-
   async componentDidUpdate(prevProps, prevState) {
-    let localCart = JSON.parse(localStorage.getItem('cart'))
-    if (localCart[0] && !this.props.user.id) {
-      console.log('Checkout componentDidMount: user not logged in.')
-      localStorage.setItem('redirect', this.props.match.path)
-      this.props.history.push('/login')
-    } else if (this.props.user.id) {
+    if (this.props.user.id) {
       if (prevProps !== this.props) {
-        if (!prevProps.cart[0]) {
+        if (!prevProps.cart[0] && !prevProps.user.id) {
           await this.props.fetchCart(this.props.user.orderId)
         }
       }
@@ -51,8 +45,16 @@ class Checkout extends Component {
 
   async componentDidMount() {
     try {
-      await this.props.fetchCart(this.props.user.orderId)
-      await this.setState({...this.props.user})
+      console.log('checkout component: componentdidmount reached')
+      let localCart = JSON.parse(localStorage.getItem('cart'))
+      if (localCart[0] && !this.props.user.id) {
+        console.log('Checkout componentDidMount: user not logged in.')
+        localStorage.setItem('redirect', '/cart')
+        this.props.history.push('/login')
+      } else {
+        await this.props.fetchCart(this.props.user.orderId)
+        await this.setState({...this.props.user})
+      }
     } catch (error) {
       console.error('fetch did not work', error)
     }
@@ -61,14 +63,12 @@ class Checkout extends Component {
   render() {
     return (
       <div>
-        {/* {<div>{this.props.product}</div>} */}
         {this.props.cart.map(item => (
           <div key={item.id}>
             <p>Name of Product: {item.product.name}</p>
             <p>Quantity Selected: {item.quantity}</p>
             <p>Price per Product: ${item.product.price}</p>
             <br />
-            {/* <p>{subtotal +=item.quantity * item.product.price}</p> */}
           </div>
         ))}
         <div>
@@ -76,7 +76,6 @@ class Checkout extends Component {
             Total Amount Due : $
             {this.props.cart.reduce((total, item) => {
               total += item.quantity * parseFloat(item.product.price)
-              //   console.log('total', total)
               return total
             }, 0)}
           </h2>
@@ -106,6 +105,7 @@ class Checkout extends Component {
           <button type="submit" className="checkout">
             Submit
           </button>
+          {this.state.noItems && <h1>Cart is empty!</h1>}
         </form>
       </div>
     )
