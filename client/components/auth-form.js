@@ -9,18 +9,39 @@ import {auth} from '../store'
 class AuthForm extends Component {
   constructor(props) {
     super(props)
-    this.submitForm = this.submitForm.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
-  submitForm(evt) {
+
+  handleSubmit(evt) {
     evt.preventDefault()
+    console.log(evt.target, 'EVENT')
+    console.log('LoginComponent: auth thunk called.')
+    const formName = evt.target.name
+    const email = evt.target.email.value
+    const password = evt.target.password.value
+
+    const firstName = evt.target.firstName.value
+    const lastName = evt.target.lastName.value
+    const billingAddress = evt.target.billingAddress.value
+    const shippingAddress = evt.target.shippingAddress.value
+    this.props.auth(
+      email,
+      password,
+      formName,
+      firstName,
+      lastName,
+      billingAddress,
+      shippingAddress
+    )
     this.props.history.push('/login')
   }
+
   render() {
-    const {name, displayName, handleSubmit, error} = this.props
+    const {name, displayName, error} = this.props
     return (
       <div className="signUp">
         <h2>SIGN UP FOR A ACCOUNT WITH US</h2>
-        <form onSubmit={handleSubmit} name={name}>
+        <form onSubmit={this.handleSubmit} name={name}>
           <div className="case">
             <label htmlFor="firstName">
               <small>First Name</small>
@@ -66,11 +87,7 @@ class AuthForm extends Component {
           </div>
           <br />
           <div>
-            <button
-              className="clickHere"
-              type="submit"
-              onClick={this.submitForm}
-            >
+            <button className="clickHere" type="submit">
               {displayName}
             </button>
           </div>
@@ -91,13 +108,13 @@ class AuthForm extends Component {
  *   function, and share the same Component. This is a good example of how we
  *   can stay DRY with interfaces that are very similar to each other!
  */
-const mapLogin = state => {
-  return {
-    name: 'login',
-    displayName: 'Login',
-    error: state.userReducer.error
-  }
-}
+// const mapLogin = state => {
+//   return {
+//     name: 'login',
+//     displayName: 'Login',
+//     error: state.userReducer.error
+//   }
+// }
 
 const mapSignup = state => {
   return {
@@ -109,33 +126,11 @@ const mapSignup = state => {
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt) {
-      evt.preventDefault()
-      console.log('LoginComponent: auth thunk called.')
-      const formName = evt.target.name
-      const email = evt.target.email.value
-      const password = evt.target.password.value
-
-      const firstName = evt.target.firstName.value
-      const lastName = evt.target.lastName.value
-      const billingAddress = evt.target.billingAddress.value
-      const shippingAddress = evt.target.shippingAddress.value
-      dispatch(
-        auth(
-          email,
-          password,
-          formName,
-          firstName,
-          lastName,
-          billingAddress,
-          shippingAddress
-        )
-      )
-    }
+    auth: (e, p, fn, fN, lN, bA, sA) => dispatch(auth(e, p, fn, fN, lN, bA, sA))
   }
 }
 
-export const Login = connect(mapLogin, mapDispatch)(AuthForm)
+// export const Login = connect(mapLogin, mapDispatch)(AuthForm)
 export const Signup = connect(mapSignup, mapDispatch)(AuthForm)
 
 /**
