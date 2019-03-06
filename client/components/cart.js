@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {
   updateQuantityThunk,
   fetchCart,
@@ -19,7 +20,7 @@ class Cart extends Component {
   }
 
   async handleQuantity(id, prodId, event) {
-    console.log(event.target.value)
+    console.log('THIS PROS USER  ', this.props.user)
     const sendData = {quantity: event.target.value, id}
 
     // user logged in
@@ -66,10 +67,9 @@ class Cart extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    // console.log('Cart component: componentDidUpdate: prevProps', prevProps)
     if (this.props.user.id) {
       if (prevProps !== this.props) {
-        if (!prevProps.cart[0]) {
+        if (!prevProps.cart[0] && !prevProps.user.id) {
           await this.props.fetchCart(this.props.user.orderId)
         }
         await this.setState({
@@ -84,9 +84,6 @@ class Cart extends Component {
       // user logged in
       if (this.props.user.id) {
         console.log('Cart component: componentDidMount: user detected.')
-        if (JSON.parse(localStorage.getItem('cart'))[0]) {
-          await this.props.combineCarts(this.props.user.orderId)
-        }
         await this.props.fetchCart(this.props.user.orderId)
       } else {
         // user not logged in
@@ -106,11 +103,17 @@ class Cart extends Component {
 
   render() {
     return (
-      <CartItems
-        {...this.state}
-        handleDelete={id => this.handleDelete(id)}
-        handleQuantity={(id, pid, evt) => this.handleQuantity(id, pid, evt)}
-      />
+      <div>
+        <CartItems
+          {...this.state}
+          handleDelete={id => this.handleDelete(id)}
+          handleQuantity={(id, pid, evt) => this.handleQuantity(id, pid, evt)}
+        />
+
+        <br />
+
+        <Link to="/checkout">CHECKOUT</Link>
+      </div>
     )
   }
 }

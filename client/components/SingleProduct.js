@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {fetchOneProduct} from '../store/productsReducer'
 import {addProductToCart} from '../store/userReducer'
 import ProductPreview from './productPreview'
+import {toast} from 'react-toastify'
 
 class SingleProduct extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class SingleProduct extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault()
+    if (this.state.addedtoCart[1] === true) return
     let product = this.props.selectedProduct
     let productId = this.props.selectedProduct.id
     let quantity = Number(this.state.quantity)
@@ -44,6 +46,10 @@ class SingleProduct extends Component {
       this.props.addProductToCart(obj)
     } else {
       // user not logged in
+      if (!JSON.parse(localStorage.getItem('cart'))) {
+        console.log('Routes component: creating localStorage cart.')
+        localStorage.setItem('cart', JSON.stringify([]))
+      }
       let localCart = JSON.parse(localStorage.getItem('cart'))
       let alreadyAdded = localCart.find(item => item.productId === productId)
       if (alreadyAdded) {
@@ -66,7 +72,7 @@ class SingleProduct extends Component {
       console.log('LocalCart: ', localCart)
       localStorage.setItem('cart', JSON.stringify(localCart))
     }
-
+    toast.success(`${this.state.quantity} added to cart!`)
     this.setState({
       addedtoCart: [this.state.quantity, true]
     })
