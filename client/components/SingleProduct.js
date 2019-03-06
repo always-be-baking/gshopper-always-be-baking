@@ -25,8 +25,8 @@ class SingleProduct extends Component {
   }
 
   handleChange(evt) {
-    console.log(evt)
     this.setState({
+      addedtoCart: [this.state.addedtoCart[0], false],
       [evt.target.name]: evt.target.value
     })
   }
@@ -80,12 +80,14 @@ class SingleProduct extends Component {
 
   render() {
     return (
-      <ProductPreview
-        state={this.state}
-        selectedProduct={this.props.selectedProduct}
-        handleSubmit={evt => this.handleSubmit(evt)}
-        handleChange={evt => this.handleChange(evt)}
-      />
+      <div>
+        <ProductPreview
+          state={this.state}
+          selectedProduct={this.props.selectedProduct}
+          handleSubmit={evt => this.handleSubmit(evt)}
+          handleChange={evt => this.handleChange(evt)}
+        />
+      </div>
     )
   }
 }

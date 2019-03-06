@@ -210,7 +210,13 @@ export const auth = (
       shippingAddress
     })
     order = await axios.get(`/api/orders/${user.data.id}`)
-    localUser = {...user.data, orderId: order.data.id}
+    if (!order.data) {
+      let userId = user.id
+      const newOrder = await axios.post('/api/orders', {userId})
+      localUser = {...user.data, orderId: newOrder.data.id}
+    } else {
+      localUser = {...user.data, orderId: order.data.id}
+    }
   } catch (authError) {
     return dispatch(getUser({error: authError}))
   }

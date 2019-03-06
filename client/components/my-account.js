@@ -19,7 +19,11 @@ class MyAccount extends Component {
   async componentDidMount() {
     try {
       let localCart = JSON.parse(localStorage.getItem('cart'))
+<<<<<<< HEAD
+      if (localCart && !this.props.user.id) {
+=======
       if (localCart[0] && !this.props.user.id) {
+>>>>>>> master
         console.log('myAccount componentDidUpdate: no user found.')
         localStorage.setItem('redirect', this.props.match.path)
         this.props.history.push('/login')
@@ -49,29 +53,33 @@ class MyAccount extends Component {
         <div>
           <h3>My Order History: </h3>
           <hr />
-          {this.props.orders.map(order => {
-            let total = 0
-            return (
-              <div key={order.id} style={{marginLeft: '10px'}}>
-                <p>Order ID: {order.id} </p>
-                <p>Items ordered:</p>
-                {order.products.map(product => {
-                  total += Number(product.price)
-                  return (
-                    <div key={product.id}>
-                      <p>
-                        {' '}
-                        {product.name} - Quantity:{' '}
-                        {product.product_order.quantity} - Price:{' '}
-                        {product.price}{' '}
-                      </p>
-                    </div>
-                  )
-                })}
-                <h4>Total: {total}</h4>
-              </div>
-            )
-          })}
+          {this.props.order ? (
+            this.props.orders.map(order => {
+              let total = 0
+              return (
+                <div key={order.id} style={{marginLeft: '10px'}}>
+                  <p>Order ID: {order.id} </p>
+                  <p>Items ordered:</p>
+                  {order.products.map(product => {
+                    total += Number(product.price)
+                    return (
+                      <div key={product.id}>
+                        <p>
+                          {' '}
+                          {product.name} - Quantity:{' '}
+                          {product.product_order.quantity} - Price:{' '}
+                          {product.price}{' '}
+                        </p>
+                      </div>
+                    )
+                  })}
+                  <h4>Total: {total}</h4>
+                </div>
+              )
+            })
+          ) : (
+            <p>No orders...</p>
+          )}
         </div>
       </div>
     )
