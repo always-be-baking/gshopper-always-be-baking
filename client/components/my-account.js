@@ -19,11 +19,7 @@ class MyAccount extends Component {
   async componentDidMount() {
     try {
       let localCart = JSON.parse(localStorage.getItem('cart'))
-<<<<<<< HEAD
       if (localCart && !this.props.user.id) {
-=======
-      if (localCart[0] && !this.props.user.id) {
->>>>>>> master
         console.log('myAccount componentDidUpdate: no user found.')
         localStorage.setItem('redirect', this.props.match.path)
         this.props.history.push('/login')
