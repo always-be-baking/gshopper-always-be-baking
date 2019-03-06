@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {fetchOneProduct} from '../store/productsReducer'
 import {addProductToCart} from '../store/userReducer'
 import ProductPreview from './productPreview'
+import {toast} from 'react-toastify'
 
 class SingleProduct extends Component {
   constructor(props) {
@@ -71,7 +72,7 @@ class SingleProduct extends Component {
       console.log('LocalCart: ', localCart)
       localStorage.setItem('cart', JSON.stringify(localCart))
     }
-
+    toast.success(`${this.state.quantity} added to cart!`)
     this.setState({
       addedtoCart: [this.state.quantity, true]
     })
