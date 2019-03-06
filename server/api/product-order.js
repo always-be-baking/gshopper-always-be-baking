@@ -37,7 +37,7 @@ router.post('/', isAdminOrUser, async (req, res, next) => {
       const updatedCart = await cartCheck.update({
         quantity: cartCheck.dataValues.quantity + quantity
       })
-      // console.log('ADDING CART ITEM', updatedCart.dataValues)
+
       res.status(200).json(updatedCart)
     } else {
       // if product not in open order, create instance
@@ -46,7 +46,6 @@ router.post('/', isAdminOrUser, async (req, res, next) => {
         productId,
         orderId
       })
-      // console.log('CREATING CART ITEM', newCartItem.dataValues)
       res.status(201).json(newCartItem)
     }
   } catch (error) {
@@ -85,7 +84,7 @@ router.put('/', isAdminOrUser, async (req, res, next) => {
 router.delete('/:id', isAdminOrUser, async (req, res, next) => {
   try {
     const id = req.params.id
-    // console.log('delete route reached', id)
+
     await ProductOrder.destroy({
       where: {
         id

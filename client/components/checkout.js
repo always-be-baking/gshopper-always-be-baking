@@ -45,10 +45,8 @@ class Checkout extends Component {
 
   async componentDidMount() {
     try {
-      console.log('checkout component: componentdidmount reached')
       let localCart = JSON.parse(localStorage.getItem('cart'))
       if (localCart[0] && !this.props.user.id) {
-        console.log('Checkout componentDidMount: user not logged in.')
         localStorage.setItem('redirect', '/cart')
         this.props.history.push('/login')
       } else {

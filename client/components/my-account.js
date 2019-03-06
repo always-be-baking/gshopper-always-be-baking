@@ -20,7 +20,6 @@ class MyAccount extends Component {
     try {
       let localCart = JSON.parse(localStorage.getItem('cart'))
       if (localCart && !this.props.user.id) {
-        console.log('myAccount componentDidUpdate: no user found.')
         localStorage.setItem('redirect', this.props.match.path)
         this.props.history.push('/login')
       }
@@ -49,7 +48,7 @@ class MyAccount extends Component {
         <div>
           <h3>My Order History: </h3>
           <hr />
-          {this.props.order ? (
+          {this.props.orders ? (
             this.props.orders.map(order => {
               let total = 0
               return (
