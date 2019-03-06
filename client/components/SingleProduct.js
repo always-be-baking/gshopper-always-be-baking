@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import {fetchOneProduct} from '../store/productsReducer'
 import {addProductToCart} from '../store/userReducer'
 import ProductPreview from './productPreview'
-import {toast} from 'react-toastify'
 
 class SingleProduct extends Component {
   constructor(props) {
@@ -25,8 +24,8 @@ class SingleProduct extends Component {
   }
 
   handleChange(evt) {
-    console.log(evt)
     this.setState({
+      addedtoCart: [this.state.addedtoCart[0], false],
       [evt.target.name]: evt.target.value
     })
   }
@@ -72,7 +71,7 @@ class SingleProduct extends Component {
       console.log('LocalCart: ', localCart)
       localStorage.setItem('cart', JSON.stringify(localCart))
     }
-    toast.success(`${this.state.quantity} added to cart!`)
+
     this.setState({
       addedtoCart: [this.state.quantity, true]
     })
@@ -80,12 +79,14 @@ class SingleProduct extends Component {
 
   render() {
     return (
-      <ProductPreview
-        state={this.state}
-        selectedProduct={this.props.selectedProduct}
-        handleSubmit={evt => this.handleSubmit(evt)}
-        handleChange={evt => this.handleChange(evt)}
-      />
+      <div>
+        <ProductPreview
+          state={this.state}
+          selectedProduct={this.props.selectedProduct}
+          handleSubmit={evt => this.handleSubmit(evt)}
+          handleChange={evt => this.handleChange(evt)}
+        />
+      </div>
     )
   }
 }
