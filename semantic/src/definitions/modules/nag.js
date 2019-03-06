@@ -180,7 +180,6 @@
               module.debug('Value stored using cookie', key, value, options)
             } else {
               module.error(error.noCookieStorage)
-              
             }
           },
           get: function(key, value) {
@@ -335,9 +334,7 @@
                 console.table(performance)
               } else {
                 $.each(performance, function(index, data) {
-                  console.log(
-                    data.Name + ': ' + data['Execution Time'] + 'ms'
-                  )
+                  console.log(data.Name + ': ' + data['Execution Time'] + 'ms')
                 })
               }
               console.groupEnd()

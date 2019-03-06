@@ -136,7 +136,6 @@
           }
           if ($context.length === 0) {
             module.error(error.invalidContext, settings.context, $module)
-            
           }
         },
 
@@ -147,7 +146,6 @@
           if (module.cache.element.height > module.cache.context.height) {
             module.reset()
             module.error(error.elementSize, $module)
-            
           }
         },
 
@@ -373,18 +371,17 @@
               //module.error(error.container, tagName, $module);
               module.determineContainer()
             } else if (
-                Math.abs(
-                  $container.outerHeight() - module.cache.context.height
-                ) > settings.jitter
-              ) {
-                module.debug(
-                  'Context has padding, specifying exact height for container',
-                  module.cache.context.height
-                )
-                $container.css({
-                  height: module.cache.context.height
-                })
-              }
+              Math.abs($container.outerHeight() - module.cache.context.height) >
+              settings.jitter
+            ) {
+              module.debug(
+                'Context has padding, specifying exact height for container',
+                module.cache.context.height
+              )
+              $container.css({
+                height: module.cache.context.height
+              })
+            }
           },
           minimumSize: function() {
             var element = module.cache.element
@@ -529,21 +526,21 @@
                 )
                 module.setInitialPosition()
               } else if (settings.pushing) {
-                  if (module.is.bound() && scroll.bottom <= context.bottom) {
-                    module.debug(
-                      'Fixing bottom attached element to bottom of browser.'
-                    )
-                    module.fixBottom()
-                  }
-                } else if (
-                    module.is.bound() &&
-                    scroll.top <= context.bottom - element.height
-                  ) {
-                    module.debug(
-                      'Fixing bottom attached element to top of browser.'
-                    )
-                    module.fixTop()
-                  }
+                if (module.is.bound() && scroll.bottom <= context.bottom) {
+                  module.debug(
+                    'Fixing bottom attached element to bottom of browser.'
+                  )
+                  module.fixBottom()
+                }
+              } else if (
+                module.is.bound() &&
+                scroll.top <= context.bottom - element.height
+              ) {
+                module.debug(
+                  'Fixing bottom attached element to top of browser.'
+                )
+                module.fixTop()
+              }
             }
           }
         },
@@ -764,9 +761,7 @@
                 console.table(performance)
               } else {
                 $.each(performance, function(index, data) {
-                  console.log(
-                    data.Name + ': ' + data['Execution Time'] + 'ms'
-                  )
+                  console.log(data.Name + ': ' + data['Execution Time'] + 'ms')
                 })
               }
               console.groupEnd()

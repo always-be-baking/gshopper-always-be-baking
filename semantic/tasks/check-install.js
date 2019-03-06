@@ -14,7 +14,6 @@ module.exports = function() {
     if (!install.isSetup()) {
       console.log('Starting install...')
       gulp.start('install')
-      
     } else {
       gulp.start('watch')
     }

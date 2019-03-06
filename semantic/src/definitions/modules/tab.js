@@ -431,16 +431,16 @@
             ) {
               $tab.empty().append($(html).clone(true))
             } else if (evaluateScripts) {
-                module.debug(
-                  'Updating HTML and evaluating inline scripts',
-                  tabPath,
-                  html
-                )
-                $tab.html(html)
-              } else {
-                module.debug('Updating HTML', tabPath, html)
-                tab.innerHTML = html
-              }
+              module.debug(
+                'Updating HTML and evaluating inline scripts',
+                tabPath,
+                html
+              )
+              $tab.html(html)
+            } else {
+              module.debug('Updating HTML', tabPath, html)
+              tab.innerHTML = html
+            }
           }
         },
 
@@ -792,9 +792,7 @@
                 console.table(performance)
               } else {
                 $.each(performance, function(index, data) {
-                  console.log(
-                    data.Name + ': ' + data['Execution Time'] + 'ms'
-                  )
+                  console.log(data.Name + ': ' + data['Execution Time'] + 'ms')
                 })
               }
               console.groupEnd()

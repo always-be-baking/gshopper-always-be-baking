@@ -20,7 +20,6 @@ module.exports = {
         if (fs.existsSync(currentPath)) {
           // found file
           configPath = path.normalize(directory)
-          
         } else {
           // reached file system root, let's stop
           if (nextDirectory == directory) {

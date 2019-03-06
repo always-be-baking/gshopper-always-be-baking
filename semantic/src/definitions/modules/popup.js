@@ -97,9 +97,9 @@
           if (settings.popup) {
             $popup = $(settings.popup).eq(0)
           } else if (settings.inline) {
-              $popup = $target.nextAll(selector.popup).eq(0)
-              settings.popup = $popup
-            }
+            $popup = $target.nextAll(selector.popup).eq(0)
+            settings.popup = $popup
+          }
           if (settings.popup) {
             $popup.addClass(className.loading)
             $offsetParent = module.get.offsetParent()
@@ -893,19 +893,19 @@
                   ? module.set.position(position, calculations)
                   : false
               } else if (settings.lastResort) {
-                  module.debug('No position found, showing with last position')
-                } else {
-                  module.debug(
-                    'Popup could not find a position to display',
-                    $popup
-                  )
-                  module.error(error.cannotPlace, element)
-                  module.remove.attempts()
-                  module.remove.loading()
-                  module.reset()
-                  settings.onUnplaceable.call($popup, element)
-                  return false
-                }
+                module.debug('No position found, showing with last position')
+              } else {
+                module.debug(
+                  'Popup could not find a position to display',
+                  $popup
+                )
+                module.error(error.cannotPlace, element)
+                module.remove.attempts()
+                module.remove.loading()
+                module.reset()
+                settings.onUnplaceable.call($popup, element)
+                return false
+              }
             }
             module.debug('Position is on stage', position)
             module.remove.attempts()
@@ -1223,9 +1223,7 @@
                 console.table(performance)
               } else {
                 $.each(performance, function(index, data) {
-                  console.log(
-                    data.Name + ': ' + data['Execution Time'] + 'ms'
-                  )
+                  console.log(data.Name + ': ' + data['Execution Time'] + 'ms')
                 })
               }
               console.groupEnd()
