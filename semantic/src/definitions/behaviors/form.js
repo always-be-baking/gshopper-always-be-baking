@@ -575,18 +575,18 @@
                     values[name].push(value)
                   }
                 } else if (isRadio) {
-                    if (values[name] === undefined || values[name] == false) {
-                      values[name] = isChecked ? value || true : false
-                    }
-                  } else if (isCheckbox) {
-                    if (isChecked) {
-                      values[name] = value || true
-                    } else {
-                      values[name] = false
-                    }
-                  } else {
-                    values[name] = value
+                  if (values[name] === undefined || values[name] == false) {
+                    values[name] = isChecked ? value || true : false
                   }
+                } else if (isCheckbox) {
+                  if (isChecked) {
+                    values[name] = value || true
+                  } else {
+                    values[name] = false
+                  }
+                } else {
+                  values[name] = value
+                }
               }
             })
             return values
@@ -1059,9 +1059,7 @@
                 console.table(performance)
               } else {
                 $.each(performance, function(index, data) {
-                  console.log(
-                    data.Name + ': ' + data['Execution Time'] + 'ms'
-                  )
+                  console.log(data.Name + ': ' + data['Execution Time'] + 'ms')
                 })
               }
               console.groupEnd()

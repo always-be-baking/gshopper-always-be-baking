@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable max-params */
 import axios from 'axios'
 import history from '../history'
 

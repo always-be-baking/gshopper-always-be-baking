@@ -901,13 +901,12 @@
               $selectedItem
             )
             module.event.item.click.call($selectedItem, {}, true)
-            
           } else if (settings.allowAdditions) {
-              module.set.selected(module.get.query())
-              module.remove.searchTerm()
-            } else {
-              module.remove.searchTerm()
-            }
+            module.set.selected(module.get.query())
+            module.remove.searchTerm()
+          } else {
+            module.remove.searchTerm()
+          }
         },
 
         change: {
@@ -1533,8 +1532,8 @@
                 }
               }
             } else if (!module.has.search()) {
-                module.set.selectedLetter(String.fromCharCode(pressedKey))
-              }
+              module.set.selectedLetter(String.fromCharCode(pressedKey))
+            }
           }
         },
 
@@ -1615,7 +1614,6 @@
             if (module.can.activate($(element))) {
               module.set.selected(value, $(element))
               if (module.is.multiple() && !module.is.allFiltered()) {
-                
               } else {
                 module.hideAndClear()
               }
@@ -1627,7 +1625,6 @@
             if (module.can.activate($(element))) {
               module.set.value(value, text, $(element))
               if (module.is.multiple() && !module.is.allFiltered()) {
-                
               } else {
                 module.hideAndClear()
               }
@@ -1892,17 +1889,17 @@
                     return true
                   }
                 } else if (
-                    String(optionValue) == String(value) ||
-                    optionText == value
-                  ) {
-                    module.verbose(
-                      'Found select item by value',
-                      optionValue,
-                      value
-                    )
-                    $selectedItem = $choice
-                    return true
-                  }
+                  String(optionValue) == String(value) ||
+                  optionText == value
+                ) {
+                  module.verbose(
+                    'Found select item by value',
+                    optionValue,
+                    value
+                  )
+                  $selectedItem = $choice
+                  return true
+                }
               })
             }
             return $selectedItem
@@ -3482,9 +3479,7 @@
                 console.table(performance)
               } else {
                 $.each(performance, function(index, data) {
-                  console.log(
-                    data.Name + ': ' + data['Execution Time'] + 'ms'
-                  )
+                  console.log(data.Name + ': ' + data['Execution Time'] + 'ms')
                 })
               }
               console.groupEnd()

@@ -218,24 +218,24 @@
             module.debug('Sending request', data, ajaxSettings.method)
             module.send.request()
           } else if (!settings.throttleFirstRequest && !module.timer) {
-              module.debug('Sending request', data, ajaxSettings.method)
+            module.debug('Sending request', data, ajaxSettings.method)
+            module.send.request()
+            module.timer = setTimeout(function() {}, settings.throttle)
+          } else {
+            module.debug('Throttling request', settings.throttle)
+            clearTimeout(module.timer)
+            module.timer = setTimeout(function() {
+              if (module.timer) {
+                delete module.timer
+              }
+              module.debug(
+                'Sending throttled request',
+                data,
+                ajaxSettings.method
+              )
               module.send.request()
-              module.timer = setTimeout(function() {}, settings.throttle)
-            } else {
-              module.debug('Throttling request', settings.throttle)
-              clearTimeout(module.timer)
-              module.timer = setTimeout(function() {
-                if (module.timer) {
-                  delete module.timer
-                }
-                module.debug(
-                  'Sending throttled request',
-                  data,
-                  ajaxSettings.method
-                )
-                module.send.request()
-              }, settings.throttle)
-            }
+            }, settings.throttle)
+          }
         },
 
         should: {
@@ -955,9 +955,7 @@
                 console.table(performance)
               } else {
                 $.each(performance, function(index, data) {
-                  console.log(
-                    data.Name + ': ' + data['Execution Time'] + 'ms'
-                  )
+                  console.log(data.Name + ': ' + data['Execution Time'] + 'ms')
                 })
               }
               console.groupEnd()
