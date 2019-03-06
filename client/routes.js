@@ -25,14 +25,11 @@ class Routes extends Component {
     this.props.loadInitialData()
 
     if (!localStorage.cart) {
-      console.log('localStorage cart created')
       localStorage.setItem('cart', JSON.stringify([]))
     }
   }
 
   render() {
-    console.log('Routes component: rendering.')
-
     const {isLoggedIn} = this.props
 
     return (

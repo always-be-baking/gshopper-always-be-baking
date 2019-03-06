@@ -164,11 +164,6 @@ async function seed() {
   await Promise.all(orders.map(order => Order.create(order)))
   await Promise.all(productOrders.map(prodOrd => ProductOrder.create(prodOrd)))
 
-  console.log(
-    `seeded ${users.length} users, ${products.length} products, ${
-      orders.length
-    } orders, ${productOrders.length} cartItems`
-  )
   console.log(`seeded successfully`)
 }
 
